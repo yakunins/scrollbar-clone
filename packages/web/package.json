@@ -1,0 +1,35 @@
+{
+    "name": "scrollbar-clone",
+    "version": "0.0.1",
+    "main": "./dist/index.js",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts",
+    "sideEffects": false,
+    "license": "MIT",
+    "files": [
+        "dist/**"
+    ],
+    "scripts": {
+        "build": "tsup src/index.ts --format esm,cjs --dts --external react",
+        "build:react": "cd ../react && npm run build",
+        "dev": "tsup src/index.ts --format esm,cjs --watch --onSuccess \"npm run build:react\" --dts --external react ",
+        "lint": "eslint src/",
+        "clean": "rimraf .turbo && rimraf node_modules && rimraf dist && rimraf playwright-report",
+        "test": "npx playwright test",
+        "test-server": "node ./test-server/serve"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.39.0",
+        "@types/node": "^20.9.0",
+        "eslint-config-custom": "*",
+        "express": "^4.18.2",
+        "playwright": "^1.39.0",
+        "tsconfig": "*",
+        "tsup": "^5.10.1",
+        "typescript": "^5.2.2",
+        "ua-parser-js": "^1.0.37"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <h1 data-testid="h1">playwright test page</h1>
+
+        <script type="module">
+            import { scrollbarThickness } from "./index.mjs";
+
+            function handleClick() {
+                const div = document.querySelector("#div");
+                const { x, y } = scrollbarThickness(div);
+                div.textContent = `${x},${y}`;
+            }
+            globalThis.handleClick = handleClick;
+        </script>
+        <button onclick="handleClick()">btn</button>
+        <div data-testid="div" id="div">abc</div>
+    </body>
+</html>
