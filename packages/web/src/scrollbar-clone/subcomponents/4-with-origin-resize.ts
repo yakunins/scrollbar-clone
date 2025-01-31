@@ -18,8 +18,10 @@ export class WithOriginResize extends WithClone {
     connectedCallback(): void {
         super.connectedCallback();
         onNextRaf(handleResize.bind(this)); // Wait for next animation frame after render
-        this.originResizeObserver?.observe(this.origin.el!);
-        addWindowListener.bind(this)();
+        if (this.origin.el) {
+            this.originResizeObserver?.observe(this.origin.el);
+            addWindowListener.bind(this)();
+        }
     }
 
     disconnectedCallback(): void {
@@ -31,8 +33,9 @@ export class WithOriginResize extends WithClone {
 
 // Sync clone's slider size with origin
 function handleResize(this: WithOriginResize): void {
-    const { yVisibleRatio } = getScrollbarInfo(this.origin.el!);
-    const { height: cloneHeight } = getScrollbarInfo(this.clone.el!);
+    if (!this.origin.el) return;
+    const { yVisibleRatio } = getScrollbarInfo(this.origin.el);
+    const { height: cloneHeight } = getScrollbarInfo(this.clone.el);
 
     if (!yVisibleRatio) return;
 
@@ -43,6 +46,8 @@ function handleResize(this: WithOriginResize): void {
 
     this.clone.content.height = cloneContentHeight;
     this.clone.content.el.style.height = `${this.clone.content.height}px`;
+
+    // if (this.handleScroll) this.handleScroll();
 }
 
 function addWindowListener(this: WithOriginResize): void {

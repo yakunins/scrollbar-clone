@@ -12,7 +12,7 @@ const onRaf = (callback: Callback): void => {
             return;
         }
     }
-    console.log("raf(): requestAnimationFrame is not avaliable");
+    console.log("onRaf(): requestAnimationFrame is not avaliable");
 };
 
 export const onNextRaf = (callback: Callback): void => {

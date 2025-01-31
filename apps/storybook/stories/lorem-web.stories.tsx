@@ -1,25 +1,13 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import type { Meta, StoryObj } from "@storybook/react";
-import { LoremIpsum, defineElement } from "scrollbar-clone";
-
-defineElement("lorem-ipsum", LoremIpsum);
-declare global {
-    namespace JSX {
-        interface IntrinsicElements {
-            "lorem-ipsum": React.DetailedHTMLProps<
-                React.HTMLAttributes<HTMLElement>,
-                HTMLElement
-            >;
-        }
-    }
-}
+import type { LoremIpsum } from "./lorem-ipsum";
+import "./lorem-ipsum";
 
 const meta: Meta<typeof LoremIpsum> = {
     title: "Web Component/lorem-ipsum",
 };
 
 export default meta;
-
 type Story = StoryObj<typeof LoremIpsum>;
 
 export const Primary: Story = {

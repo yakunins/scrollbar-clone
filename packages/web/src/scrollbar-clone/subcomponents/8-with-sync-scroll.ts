@@ -1,4 +1,4 @@
-import { WithDataScrolling } from "./7-with-data-scrolling";
+import { WithDataScrolling } from "./7-with-scroll-indicator";
 import { getScrollbarInfo, onNextRaf, round } from "./utils";
 
 const scrollEmitTimeout = 50;
@@ -48,7 +48,9 @@ export class WithSyncScroll extends WithDataScrolling {
 
 // Handler to sync scrollbars position
 function handleScroll(this: WithSyncScroll, e?: Event): void {
-    if (!this.origin.el || !this.clone.el) return;
+    if (!this.origin.el) return;
+
+    this.handleResize();
 
     let from, to;
     if (e?.target === this.clone.el) {
@@ -64,13 +66,13 @@ function handleScroll(this: WithSyncScroll, e?: Event): void {
     // prevent handling scroll events emmited by `el.scrollTop = ...`
     if (this.suppressScrollHandler(from)) return;
 
-    const { yScrollable } = getScrollbarInfo(this.origin.el);
+    const { yIsScrollable } = getScrollbarInfo(this.origin.el);
 
     // if origin is not scrollable...
-    if (!yScrollable) {
+    if (!yIsScrollable) {
         // ...make clone unscrollable
         this.clone.el.scrollTop =
-            this.scrolledRatio * getScrollbarInfo(this.clone.el).yMax;
+            this.scrolledRatio * getScrollbarInfo(this.clone.el).yMax; // stick to last known scrollbar position
         return;
     }
 
@@ -88,11 +90,15 @@ function handleScroll(this: WithSyncScroll, e?: Event): void {
 }
 
 function addListenters(this: WithSyncScroll): void {
-    this.origin.listenerEl!.addEventListener("scroll", this.handleScroll);
-    this.clone.el!.addEventListener("scroll", this.handleScroll);
+    if (!this.origin.listenerEl) return;
+
+    this.origin.listenerEl.addEventListener("scroll", this.handleScroll);
+    this.clone.el.addEventListener("scroll", this.handleScroll);
 }
 
 function removeListenters(this: WithSyncScroll): void {
-    this.origin.listenerEl!.removeEventListener("scroll", this.handleScroll);
-    this.clone.el!.removeEventListener("scroll", this.handleScroll);
+    if (!this.origin.listenerEl) return;
+
+    this.origin.listenerEl.removeEventListener("scroll", this.handleScroll);
+    this.clone.el.removeEventListener("scroll", this.handleScroll);
 }

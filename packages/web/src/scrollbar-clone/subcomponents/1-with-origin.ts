@@ -1,4 +1,4 @@
-import { get } from "./utils";
+import { get, getUserAgent } from "./utils";
 
 const attrName = "origin-selector";
 const defaultSelector = ":root";
@@ -30,12 +30,15 @@ export class WithOrigin extends HTMLElement {
 
     connectedCallback(): void {
         this.setOrigin();
+
+        // Provides selector data-user-agent="browser_chrome_116__device_type_mobile"
+        this.dataset.ua = getUserAgent();
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
-        if (attr === attrName)
+        if (attr === attrName && _prev)
             console.warn(
-                `<scrollbar-clone>: attribute "${attrName}" is not supposed to be changed`
+                `<scrollbar-clone>: attribute "${attrName}" is not supposed to be changed (${_prev} → ${_next})`
             );
     }
 }
@@ -55,7 +58,10 @@ export function setOrigin(this: WithOrigin): void {
             this.origin.el?.parentElement || get.document(this);
     };
 
-    const el = this.closest(this.origin.selector);
+    const el =
+        this.closest(this.origin.selector) ||
+        get.document(this)?.querySelector(this.origin.selector);
+
     if (el) {
         if (el === get.body(this) || el === get.html(this)) {
             setOriginRoot();
@@ -66,5 +72,8 @@ export function setOrigin(this: WithOrigin): void {
     } else {
         this.origin.el = null;
         this.origin.listenerEl = null;
+        console.warn(
+            `<scrollbar-clone>: element not found for ${attrName}="${this.origin.selector}"`
+        );
     }
 }

@@ -9,21 +9,35 @@ export default meta;
 
 type Story = StoryObj<typeof ScrollbarClone>;
 
-export const Primary: Story = {
+export const OneCol: Story = {
     render: () => (
-        <>
+        <div className="page">
             <style>
                 {`
-                    html { overflow: hidden; }
+                    html { --overflow: hidden; }
+                    .page {
+                        --header-size: 54px;
+                        margin-top: var(--header-size);
+                    }
+                    .fixed-header {
+                        position: fixed;
+                        height: var(--header-size);
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        background-color: tan;
+                    }
                 `}
             </style>
+            <div className="fixed-header">global navigation</div>
             <ScrollbarClone
+                disable-scroll
                 id="test"
                 show-origin-scrollbar="false"
                 style={{
-                    height: "100dvh",
+                    height: "calc(100dvh - var(--header-size))",
                     position: "fixed",
-                    top: 0,
+                    top: "var(--header-size)",
                     right: 0,
                 }}
             />
@@ -33,8 +47,7 @@ export const Primary: Story = {
             <Lorem />
             <Lorem />
             <Lorem />
-            <Lorem />
-        </>
+        </div>
     ),
     name: "one column",
 };

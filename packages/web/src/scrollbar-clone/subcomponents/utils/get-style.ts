@@ -1,8 +1,6 @@
 import { get } from "./get";
 
-export const computedStyle = (
-    el: HTMLElement
-): CSSStyleDeclaration | undefined => {
+export const getStyle = (el: HTMLElement): CSSStyleDeclaration | undefined => {
     if (typeof getComputedStyle !== "undefined") {
         return getComputedStyle(el);
     }
@@ -16,6 +14,6 @@ export const computedStyle = (
             return window.getComputedStyle(el);
         }
     }
-    console.log("cstyle(): getComputedStyle is not avaliable");
+    console.log("getStyle(): getComputedStyle is not avaliable");
     return undefined;
 };

@@ -12,7 +12,9 @@ declare namespace JSX {
         "scrollbar-clone": ScrollbarCloneAttributes;
     }
     interface ScrollbarCloneAttributes extends HTMLAttributes {
-        "origin-selector"?: string;
+        "disable-scrollbar"?: string | boolean;
         id?: string;
+        "origin-selector"?: string;
+        "show-origin-scrollbar"?: string | boolean;
     }
 }

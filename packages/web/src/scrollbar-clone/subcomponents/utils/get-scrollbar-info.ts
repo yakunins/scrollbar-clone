@@ -1,7 +1,7 @@
 import { get } from "./get";
 import { round } from "./round";
 import { min, max } from "./min-max";
-import { computedStyle } from "./get-computed-style";
+import { getStyle } from "./get-style";
 
 type ScrollbarInfo = {
     height: number;
@@ -10,7 +10,7 @@ type ScrollbarInfo = {
     yMax: number;
     yScrolledRatio: number;
     yVisibleRatio: number;
-    yScrollable: boolean;
+    yIsScrollable: boolean;
 };
 
 export const getScrollbarInfo = (el: HTMLElement): ScrollbarInfo => {
@@ -18,9 +18,9 @@ export const getScrollbarInfo = (el: HTMLElement): ScrollbarInfo => {
     const contentHeight = contentSize(el).y;
     const y = el.scrollTop;
     const yMax = contentHeight - height;
-    const yScrollable = !(
-        computedStyle(el)?.overflowY === "hidden" ||
-        computedStyle(el)?.overflow === "hidden"
+    const yIsScrollable = !(
+        getStyle(el)?.overflowY === "hidden" ||
+        getStyle(el)?.overflow === "hidden"
     );
 
     const info = {
@@ -30,7 +30,7 @@ export const getScrollbarInfo = (el: HTMLElement): ScrollbarInfo => {
         yMax,
         yScrolledRatio: round(y / yMax),
         yVisibleRatio: round(height / contentHeight),
-        yScrollable,
+        yIsScrollable,
     };
 
     return info;
@@ -75,26 +75,16 @@ const contentSize = (el: HTMLElement): { x: number; y: number } => {
 
 const frameY = (el: HTMLElement): number => {
     if (el === get.html(el)) {
-        const [html, body] = [get.html(el), get.body(el)];
-        return (
-            min(
-                html?.clientHeight, // priority
-                max(body?.clientHeight, html?.clientHeight)
-            ) || 0
-        );
+        const [html, win] = [get.html(el), get.window(el)];
+        return max(html?.clientHeight, win?.innerHeight) || 0;
     }
     return min(el.offsetHeight, el.clientHeight) || 0;
 };
 
 const frameX = (el: HTMLElement): number => {
     if (el === get.html(el)) {
-        const [html, body] = [get.html(el), get.body(el)];
-        return (
-            min(
-                html?.clientWidth, // priority
-                max(body?.clientHeight, html?.clientWidth)
-            ) || 0
-        );
+        const [html, win] = [get.html(el), get.window(el)];
+        return max(html?.clientWidth, win?.innerWidth) || 0;
     }
     return min(el.offsetWidth, el.clientWidth) || 0;
 };

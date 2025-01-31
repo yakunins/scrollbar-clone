@@ -37,5 +37,6 @@ module.exports = {
             },
         ],
         "eslint-comments/require-description": "off",
+        "no-console": "off",
     },
 };

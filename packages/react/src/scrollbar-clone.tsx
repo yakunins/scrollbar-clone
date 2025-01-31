@@ -1,10 +1,11 @@
 import * as React from "react";
-import { ScrollbarClone as WebComponent, defineElement } from "scrollbar-clone";
+import "scrollbar-clone";
 
 interface ScrollbarCloneAttributes extends React.HTMLAttributes<HTMLElement> {
+    "disable-scrollbar"?: string | boolean;
     id?: string;
     "origin-selector"?: string;
-    "show-origin-scrollbar"?: string;
+    "show-origin-scrollbar"?: string | boolean;
 }
 
 export type ScrollbarClone = React.FC<ScrollbarCloneAttributes>;
@@ -14,4 +15,3 @@ export const ScrollbarClone: ScrollbarClone = (props) => {
 };
 
 ScrollbarClone.displayName = "ScrollbarClone";
-defineElement("scrollbar-clone", WebComponent);

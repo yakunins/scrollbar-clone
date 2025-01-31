@@ -1,11 +1,18 @@
 {
     "name": "scrollbar-clone",
     "version": "0.0.1",
+    "description": "scrollbar clone: lightweight web component to customize scrollbar with margin, position, etc",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
     "sideEffects": false,
     "license": "MIT",
+    "homepage": "https://github.com/yakunins/scrollbar-clone",
+    "author": {
+        "name": "Sergey Yakunin",
+        "email": "s@yakunins.com",
+        "url": "https://github.com/yakunins"
+    },
     "files": [
         "dist/**"
     ],

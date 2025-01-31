@@ -1,5 +1,4 @@
 import { WithId } from "./2-with-id";
-import { getUserAgent } from "./utils";
 
 /*
  * Prevents collapsing scrollbar clone into nothing when zoom level < 33%
@@ -12,63 +11,66 @@ export class WithClone extends WithId {
             el: HTMLElement;
             height?: number;
         };
-        el: HTMLElement | null;
+        el: HTMLElement;
         shadow: ShadowRoot | null;
         styleEl: HTMLElement | null;
+        disableScroll: boolean;
     };
 
     constructor() {
         super();
         this.clone = {
-            el: this,
+            el: document.createElement("div"),
             styleEl: null,
-            shadow: this.attachShadow({ mode: "open" }),
+            shadow: null,
             content: {
                 el: document.createElement("div"),
             },
+            disableScroll: false,
         };
-    }
-
-    appendCloneCSS(): void {
-        if (this.clone.styleEl) this.clone.el!.removeChild(this.clone.styleEl);
-        this.clone.styleEl = createStyle(cloneCSS(this.cloneId));
-        this.clone.el!.appendChild(this.clone.styleEl);
+        this.clone.shadow = this.clone.el.attachShadow({ mode: "open" });
+        this.clone.el.classList.add("scrollbar-clone__scrollbar");
     }
 
     connectedCallback(): void {
         super.connectedCallback();
-        this.appendCloneCSS();
-        this.clone.shadow?.appendChild(this.clone.content.el);
-        const contentStyleEl = createStyle(contentCSS);
-        this.clone.shadow?.appendChild(contentStyleEl);
 
-        // Required for handling zero-width scrollbars in Firefox and mobile browsers
-        this.clone.el!.dataset.userAgent = getUserAgent();
+        if (!this.origin.el) return; // Exit fast if no origin
+
+        this.appendChild(this.clone.el);
+        setCloneCSS.bind(this)();
+
+        this.clone.shadow?.appendChild(this.clone.content.el);
+        this.clone.shadow?.appendChild(createStyleEl(contentCSS));
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
         super.attributeChangedCallback(attr, _prev, _next);
-        if (attr === "id") this.appendCloneCSS();
+        if (attr === "id") setCloneCSS.bind(this)();
     }
 }
 
 const cloneCSS = (id: string | number): string => `
 [data-scrollbar-clone="clone:${id}"] {
-    display: block;
-    overflow-x: hidden;
-    overflow-y: auto;
-    width: var(--scrollbar-width);
-
     /* desktop devices */
-    &[data-user-agent*="device_type_unknown"] { --scrollbar-width: 17px; }
-    &[data-user-agent*="edge"] { --scrollbar-width: 16px; }
-    &[data-user-agent*="safari"] { --scrollbar-width: 15px; }
+    &[data-ua*="device_type_unknown"] { --scrollbar-width: 17px; }
+    &[data-ua*="edge"] { --scrollbar-width: 16px; }
+    &[data-ua*="safari"] { --scrollbar-width: 15px; }
 
     /* device_type_mobile, browser_mobile */
-    &[data-user-agent*="mobile"] {
-        --scrollbar-width: 11px;
-        pointer-events: none;
-    }
+    &[data-ua*="mobile"] { --scrollbar-width: 11px; }
+}
+[data-scrollbar-clone="clone:${id}"] {
+    display: block;
+    overflow: hidden;
+    width: var(--scrollbar-width);
+}
+[data-scrollbar-clone="clone:${id}"] > div {
+    position: absolute;
+    width: var(--scrollbar-width);
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 `;
 
@@ -80,8 +82,16 @@ div {
 }
 `;
 
-const createStyle = (stylesheet: string): HTMLElement => {
+const createStyleEl = (stylesheet: string): HTMLElement => {
     const style = document.createElement("style");
     style.appendChild(document.createTextNode(stylesheet));
     return style;
 };
+
+function setCloneCSS(this: WithClone): void {
+    if (this.contains(this.clone.styleEl))
+        this.removeChild(this.clone.styleEl!);
+
+    this.clone.styleEl = createStyleEl(cloneCSS(this.cloneId));
+    this.appendChild(this.clone.styleEl);
+}

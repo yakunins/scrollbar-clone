@@ -1,6 +1,7 @@
 import { WithCloneResize } from "./5-with-clone-resize";
 
 const attrName = "show-origin-scrollbar";
+const initialValue = false;
 
 export class WithShowOriginScrollbar extends WithCloneResize {
     static get observedAttributes(): string[] {
@@ -11,20 +12,8 @@ export class WithShowOriginScrollbar extends WithCloneResize {
 
     constructor() {
         super();
-        this.showOriginScrollbar = false; // initial state and fallback value
+        this.showOriginScrollbar = initialValue;
         this.originStyleEl = null;
-    }
-
-    setOriginCSS(): void {
-        if (!this.clone.el) return;
-
-        if (this.originStyleEl && this.clone.el.contains(this.originStyleEl))
-            this.clone.el.removeChild(this.originStyleEl);
-
-        if (this.showOriginScrollbar) return;
-
-        this.originStyleEl = createStyle(originCSS(this.cloneId));
-        this.clone.el.appendChild(this.originStyleEl);
     }
 
     connectedCallback(): void {
@@ -46,11 +35,21 @@ const originCSS = (id: string | number): string => `
 
 function handleAttrChange(this: WithShowOriginScrollbar): void {
     const value = this.getAttribute(attrName);
-    this.showOriginScrollbar = false;
-    if (value) this.showOriginScrollbar = true;
-    if (value === "") this.showOriginScrollbar = true;
-    if (value === "false") this.showOriginScrollbar = false;
-    this.setOriginCSS();
+
+    if (value || value === "") this.showOriginScrollbar = true;
+    if (!value || value === "false") this.showOriginScrollbar = false;
+
+    appendOriginCSS.bind(this)();
+}
+
+function appendOriginCSS(this: WithShowOriginScrollbar): void {
+    if (this.originStyleEl && this.clone.el.contains(this.originStyleEl))
+        this.clone.el.removeChild(this.originStyleEl);
+
+    if (this.showOriginScrollbar) return;
+
+    this.originStyleEl = createStyle(originCSS(this.cloneId));
+    this.clone.el.appendChild(this.originStyleEl);
 }
 
 const createStyle = (stylesheet: string): HTMLElement => {

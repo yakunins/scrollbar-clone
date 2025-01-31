@@ -10,8 +10,8 @@ export const scrollbarThickness = useMemoizedValue(tryScrollbarThickness);
 
 function tryScrollbarThickness(el: HTMLElement): Thickness {
     try {
-        const { x, y } = measureScrollbarThickness(el);
-        return result;
+        const xy = measureScrollbarThickness(el);
+        return xy;
     } catch (err) {
         console.warn("error in measureScrollbarThickness():", err);
         return { x: 17, y: 17 };
@@ -55,13 +55,21 @@ function measureScrollbarThickness(el: HTMLElement): Thickness {
     return { y, x };
 }
 
-export const defaultScrollbarThickness = (): number => {
-    const perBrowser = {
-        chrome: 17,
-        firefox: 17,
-        edge: 15,
-        safari: 15,
-        other: 17,
-        mobile: 10,
-    };
+export const defaultScrollbarThickness = (browser: string): number => {
+    switch (browser) {
+        case "chrome":
+            return 17;
+        case "firefox":
+            return 17;
+        case "edge":
+            return 15;
+        case "safari":
+            return 15;
+        case "mobile":
+            return 10;
+        case "other":
+            return 17;
+        default:
+            return 17;
+    }
 };

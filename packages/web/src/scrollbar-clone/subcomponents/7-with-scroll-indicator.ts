@@ -16,10 +16,10 @@ export class WithDataScrolling extends WithShowOriginScrollbar {
 
 function setScrolling(this: WithDataScrolling): void {
     clearTimeout(this._indicatorTimeout!);
-    this.clone.el!.dataset.scrolling = "";
+    this.dataset.scrolling = "";
 
     this._indicatorTimeout = setTimeout(() => {
-        delete this.clone.el!.dataset.scrolling;
+        delete this.dataset.scrolling;
         this._indicatorTimeout = null;
     }, scrollIndicatorTimeout);
 }

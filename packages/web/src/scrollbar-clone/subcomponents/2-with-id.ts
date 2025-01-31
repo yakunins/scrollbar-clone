@@ -28,7 +28,7 @@ export class WithId extends WithOrigin {
     }
 
     disconnectedCallback(): void {
-        delete this.origin.el!.dataset.scrollbarClone;
+        delete this.origin.el?.dataset.scrollbarClone;
     }
 
     attributeChangedCallback(attr: string, _prev: string, next: string): void {

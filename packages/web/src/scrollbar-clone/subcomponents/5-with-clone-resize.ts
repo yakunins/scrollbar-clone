@@ -12,7 +12,7 @@ export class WithCloneResize extends WithOriginResize {
 
     connectedCallback(): void {
         super.connectedCallback();
-        this.cloneResizeObserver?.observe(this.clone.el!);
+        this.cloneResizeObserver?.observe(this.clone.el);
     }
 
     disconnectedCallback(): void {

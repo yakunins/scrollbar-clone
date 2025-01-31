@@ -1,5 +1,5 @@
 import * as React from "react";
-import { LoremIpsum, defineElement } from "scrollbar-clone";
+import "scrollbar-clone";
 
 export type Lorem = React.FC<React.PropsWithChildren>;
 
@@ -8,4 +8,3 @@ export const Lorem: Lorem = ({ children, ...rest }) => {
 };
 
 Lorem.displayName = "Lorem";
-defineElement("lorem-ipsum", LoremIpsum);
