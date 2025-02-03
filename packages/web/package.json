@@ -1,7 +1,7 @@
 {
     "name": "scrollbar-clone",
-    "version": "0.0.1",
-    "description": "scrollbar clone: lightweight web component to customize scrollbar with margin, position, etc",
+    "version": "0.0.2",
+    "description": "scrollbar clone: lightweight web component that allows scrollbar to have custom margins, positioning, etc.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
