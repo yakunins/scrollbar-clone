@@ -41,7 +41,7 @@ export class WithClone extends WithId {
         setCloneCSS.bind(this)();
 
         this.clone.shadow?.appendChild(this.clone.content.el);
-        this.clone.shadow?.appendChild(createStyleEl(contentCSS));
+        this.clone.shadow?.appendChild(createStyleEl(cloneContentCSS));
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
@@ -56,7 +56,6 @@ const cloneCSS = (id: string | number): string => `
     &[data-ua*="device_type_unknown"] { --scrollbar-width: 17px; }
     &[data-ua*="edge"] { --scrollbar-width: 16px; }
     &[data-ua*="safari"] { --scrollbar-width: 15px; }
-
     /* device_type_mobile, browser_mobile */
     &[data-ua*="mobile"] { --scrollbar-width: 11px; }
 }
@@ -74,7 +73,7 @@ const cloneCSS = (id: string | number): string => `
 }
 `;
 
-const contentCSS = `
+const cloneContentCSS = `
 div {
     pointer-events: none;
     width: ${cloneContentWidth};
@@ -82,16 +81,27 @@ div {
 }
 `;
 
-const createStyleEl = (stylesheet: string): HTMLElement => {
-    const style = document.createElement("style");
-    style.appendChild(document.createTextNode(stylesheet));
-    return style;
-};
+const disableScrollCSS = (id: string | number): string => `
+[data-scrollbar-clone="origin:${id}"] {
+    &[data-disable-scroll*="true"] { overflow-y: hidden; }
+}
+[data-scrollbar-clone="clone:${id}"] {
+    &[disable-scroll*="true"] { pointer-events: none; }
+}
+`;
 
 function setCloneCSS(this: WithClone): void {
     if (this.contains(this.clone.styleEl))
         this.removeChild(this.clone.styleEl!);
 
-    this.clone.styleEl = createStyleEl(cloneCSS(this.cloneId));
+    this.clone.styleEl = createStyleEl(
+        cloneCSS(this.cloneId) + disableScrollCSS(this.cloneId)
+    );
     this.appendChild(this.clone.styleEl);
 }
+
+const createStyleEl = (stylesheet: string): HTMLElement => {
+    const style = document.createElement("style");
+    style.appendChild(document.createTextNode(stylesheet));
+    return style;
+};

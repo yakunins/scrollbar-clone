@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { ScrollbarClone } from "scrollbar-clone";
 import "./lorem-ipsum";
@@ -8,55 +9,95 @@ const meta: Meta<typeof ScrollbarClone> = {
 };
 
 export default meta;
-
 type Story = StoryObj<typeof ScrollbarClone>;
-
 export const OneCol: Story = {
     render: () => {
-        return (
-            <div>
-                <style>
-                    {`
-                        scrollbar-clone {
-                            opacity: 0;
-                            transition-property: opacity;
-                            transition-duration: .35s;
-                            transition-delay: .15s;
-                        }
-                        scrollbar-clone:hover,
-                        scrollbar-clone[data-scrolling] {
-                            opacity: 1;
-                            transition-duration: .0s;
-                            transition-delay: 0s;
-                        }
-                    `}
-                </style>
-                <scrollbar-clone
-                    id="test"
-                    show-origin-scrollbar="false"
-                    style={{
-                        height: "100dvh",
-                        position: "fixed",
-                        top: 0,
-                        right: 0,
-                    }}
-                />
-                {[
-                    Array(20)
-                        .fill("")
-                        .map((i, idx) => {
-                            return (
-                                <p key={idx}>
-                                    <lorem-ipsum />
-                                </p>
-                            );
-                        }),
-                ]}
-            </div>
-        );
+        return <OneColExample />;
     },
     name: "one column",
 };
+
+function OneColExample(): React.ReactNode {
+    const [disabled, setDisabled] = useState(false);
+    const [overflow, setOverflow] = useState(false);
+
+    const oveflowHiddenCSS = `html, body { overflow-y: hidden; }`;
+
+    return (
+        <div>
+            <div
+                className="controls"
+                style={{
+                    position: "fixed",
+                    background: "tan",
+                    padding: "1rem",
+                    margin: "1rem",
+                }}
+            >
+                <label>
+                    <input
+                        onChange={() => {
+                            setDisabled(!disabled);
+                        }}
+                        type="checkbox"
+                        value={disabled ? "true" : "false"}
+                    />
+                    disable-scroll
+                </label>
+                <br />
+                <label>
+                    <input
+                        onChange={() => {
+                            setOverflow(!overflow);
+                        }}
+                        type="checkbox"
+                        value={overflow ? "true" : "false"}
+                    />
+                    html-overflow-hidden
+                </label>
+            </div>
+            <style>
+                {`
+                _scrollbar-clone {
+                    opacity: 0;
+                    transition-property: opacity;
+                    transition-duration: .35s;
+                    transition-delay: .15s;
+                }
+                _scrollbar-clone:hover,
+                _scrollbar-clone[data-scrolling] {
+                    opacity: 1;
+                    transition-duration: .0s;
+                    transition-delay: 0s;
+                }
+            `}
+            </style>
+            {overflow ? <style>{oveflowHiddenCSS}</style> : null}
+            <scrollbar-clone
+                disable-scroll={disabled ? "true" : "false"}
+                id="test"
+                show-origin-scrollbar="false"
+                style={{
+                    height: "100dvh",
+                    position: "fixed",
+                    top: 0,
+                    right: 0,
+                }}
+            />
+            {[
+                Array(20)
+                    .fill("")
+                    .map((i, idx) => {
+                        return (
+                            <p key={idx}>
+                                <lorem-ipsum />
+                            </p>
+                        );
+                    }),
+            ]}
+        </div>
+    );
+}
 
 export const ThreeCol: Story = {
     render: () => {

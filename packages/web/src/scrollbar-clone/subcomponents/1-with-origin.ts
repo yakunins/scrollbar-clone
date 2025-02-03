@@ -31,14 +31,14 @@ export class WithOrigin extends HTMLElement {
     connectedCallback(): void {
         this.setOrigin();
 
-        // Provides selector data-user-agent="browser_chrome_116__device_type_mobile"
+        // data-user-agent="browser_chrome_116__device_type_mobile"
         this.dataset.ua = getUserAgent();
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
         if (attr === attrName && _prev)
             console.warn(
-                `<scrollbar-clone>: attribute "${attrName}" is not supposed to be changed (${_prev} → ${_next})`
+                `<scrollbar-clone>: attribute "${attrName}" is not supposed to be altered (${_prev} → ${_next})`
             );
     }
 }

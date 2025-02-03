@@ -2,7 +2,7 @@ import * as React from "react";
 import "scrollbar-clone";
 
 interface ScrollbarCloneAttributes extends React.HTMLAttributes<HTMLElement> {
-    "disable-scrollbar"?: string | boolean;
+    "disable-scroll"?: string | boolean;
     id?: string;
     "origin-selector"?: string;
     "show-origin-scrollbar"?: string | boolean;

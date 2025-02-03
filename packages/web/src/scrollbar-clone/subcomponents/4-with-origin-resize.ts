@@ -1,17 +1,23 @@
 import { WithClone } from "./3-with-clone";
-import { get, throttle, getScrollbarInfo, onNextRaf } from "./utils";
-
-const resizeTimeout = 20; // ~30 frames per secons
+import { get, getScrollbarInfo, onNextRaf } from "./utils";
 
 export class WithOriginResize extends WithClone {
     public handleResize: () => void;
     public originResizeObserver: ResizeObserver | null;
+    originResizeTimeout: number | null = null;
 
     constructor() {
         super();
-        this.handleResize = throttle(handleResize.bind(this), resizeTimeout);
+        this.handleResize = handleResize.bind(this);
         this.originResizeObserver = new ResizeObserver(() => {
             this.handleResize();
+        });
+        this.originResizeObserver = new ResizeObserver(() => {
+            if (this.originResizeTimeout) return;
+            this.originResizeTimeout = requestAnimationFrame(() => {
+                this.handleResize();
+                this.originResizeTimeout = null;
+            });
         });
     }
 

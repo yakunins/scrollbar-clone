@@ -1,18 +1,16 @@
 import { WithSyncScroll } from "./8-with-sync-scroll";
 
+/*
+ * Disable scroll by setting:
+ * 1. origin style to have "overflow-y: hidden"
+ * 2. clone scrollbar to have "pointer-events: none"
+ */
+
 const attrName = "disable-scroll";
 
 export class WithDisableScrollbar extends WithSyncScroll {
     static get observedAttributes(): string[] {
         return [...WithSyncScroll.observedAttributes, attrName];
-    }
-
-    public cloneOverlayEl: HTMLElement;
-
-    constructor() {
-        super();
-        this.cloneOverlayEl = document.createElement("div");
-        this.cloneOverlayEl.classList.add("scrollbar-clone__scrollbar-overlay");
     }
 
     connectedCallback(): void {
@@ -29,17 +27,12 @@ export class WithDisableScrollbar extends WithSyncScroll {
 function handleAttrChange(this: WithDisableScrollbar): void {
     const value = this.getAttribute(attrName);
 
-    if (value || value === "") this.clone.disableScroll = true;
-    if (!value || value === "false") this.clone.disableScroll = false;
-
-    appendOverlayEl.bind(this)();
-}
-
-function appendOverlayEl(this: WithDisableScrollbar): void {
-    if (this.contains(this.cloneOverlayEl))
-        this.removeChild(this.cloneOverlayEl);
-
-    if (!this.clone.disableScroll) return;
-
-    this.appendChild(this.cloneOverlayEl);
+    if (value === "true" || value === "") {
+        this.clone.disableScroll = true;
+        if (this.origin.el) this.origin.el.dataset.disableScroll = "true";
+    } else {
+        this.clone.disableScroll = false;
+        if (this.origin.el?.dataset.disableScroll)
+            delete this.origin.el.dataset.disableScroll;
+    }
 }

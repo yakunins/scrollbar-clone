@@ -1,9 +1,18 @@
 # Scrollbar Clone
 
-A lightweight web component that allows scrollbars to have custom margins, positioning, etc.  
+Lightweight web component that allows scrollbar to have custom margins, positioning, etc.  
 It effectively transforms the scrollbar into a regular HTML element
+
+```html
+<scrollbar-clone
+    origin-selector=".with-scrollbar-clone"
+    disable-scroll="false"
+    show-origin-scrollbar="false"
+    style="height: 500px;"
+/>
+```
 
 Examples:
 
--   <a href="https://codesandbox.io/p/sandbox/m5mjh4">scrollbar position examplr</a>
+-   <a href="https://codesandbox.io/p/sandbox/m5mjh4">scrollbar position example</a>
 -   tri-column layout
