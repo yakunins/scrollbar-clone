@@ -1,7 +1,7 @@
 import { WithCloneResize } from "./5-with-clone-resize";
 
 const attrName = "show-origin-scrollbar";
-const initialValue = false;
+const attrInitialValue = false;
 
 export class WithShowOriginScrollbar extends WithCloneResize {
     static get observedAttributes(): string[] {
@@ -12,7 +12,7 @@ export class WithShowOriginScrollbar extends WithCloneResize {
 
     constructor() {
         super();
-        this.showOriginScrollbar = initialValue;
+        this.showOriginScrollbar = attrInitialValue;
         this.originStyleEl = null;
     }
 

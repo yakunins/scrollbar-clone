@@ -1,22 +1,21 @@
 type Callback = (timestamp?: number) => void;
 
-const onRaf = (callback: Callback): void => {
+export const onRaf = (callback: Callback): number | null => {
     if (typeof requestAnimationFrame !== "undefined") {
-        requestAnimationFrame(callback);
-        return;
+        return requestAnimationFrame(callback);
     }
 
     if (typeof window !== "undefined") {
         if (typeof window.requestAnimationFrame !== "undefined") {
-            window.requestAnimationFrame(callback);
-            return;
+            return window.requestAnimationFrame(callback);
         }
     }
-    console.log("onRaf(): requestAnimationFrame is not avaliable");
+    console.warn("onRaf(): requestAnimationFrame is not avaliable");
+    return null;
 };
 
-export const onNextRaf = (callback: Callback): void => {
-    onRaf(() => {
+export const onNextRaf = (callback: Callback): number | null => {
+    return onRaf(() => {
         onRaf(callback);
     });
 };

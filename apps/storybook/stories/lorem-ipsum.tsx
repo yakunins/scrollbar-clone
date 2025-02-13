@@ -1,27 +1,32 @@
-export class LoremIpsum extends HTMLElement {
-    connectedCallback(): void {
-        const rnd = Math.floor(lorems.length * Math.random());
-        this.appendChild(document.createTextNode(lorems[rnd]));
-    }
-}
-const elementName = "lorem-ipsum";
-if (!customElements.get(elementName))
-    customElements.define(elementName, LoremIpsum);
+import { useRef } from "react";
 
-declare global {
-    interface HTMLElementTagNameMap {
-        "lorem-ipsum": typeof LoremIpsum;
+export function LoremIpsum(): JSX.Element {
+    const value = useRef(pseudoRandom());
+
+    return <p>{lorems[value.current]}</p>;
+}
+
+class SeedRandom {
+    private seed: number;
+    private n = 0x7fffffff; // max 32-bit signed = 2147483647
+
+    constructor(seed: number) {
+        this.seed = seed % this.n;
+        if (this.seed <= 0) this.seed += this.n - 1;
     }
-    // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace JSX {
-        interface IntrinsicElements {
-            "lorem-ipsum": React.DetailedHTMLProps<
-                React.HTMLAttributes<HTMLElement>,
-                HTMLElement
-            >;
-        }
+
+    public next(): number {
+        this.seed = (this.seed * 16807) % this.n;
+        return this.seed / this.n;
+    }
+
+    public nextInt(maxExclusive: number): number {
+        return Math.floor(this.next() * maxExclusive);
     }
 }
+
+const randomGenerator = new SeedRandom(1);
+const pseudoRandom = (): number => randomGenerator.nextInt(lorems.length);
 
 const lorems = [
     `Lorem cillum ex veniam ea. Labore non tempor quis aliquip
@@ -107,7 +112,8 @@ Lorem fugiat. Magna fugiat culpa id irure eiusmod fugiat. Tempor
 culpa officia officia. Veniam non deserunt anim dolore excepteur
 elit consequat adipisicing cillum ullamco incididunt et ex. In
 ea magna cillum sint voluptate deserunt Lorem ex minim mollit
-et. Incididunt mollit excepteur eiusmod fugiat exercitation
+et.`,
+    `Incididunt mollit excepteur eiusmod fugiat exercitation
 ullamco nisi consectetur magna adipisicing voluptate eu qui.
 Consequat Lorem laboris ad qui adipisicing qui ut ut minim sint
 consequat amet ut labore. Tempor anim exercitation quis labore
@@ -128,13 +134,15 @@ mollit. Consequat fugiat veniam cillum consequat cupidatat
 commodo pariatur id. Sunt magna mollit anim ipsum nostrud sint
 magna culpa culpa cillum id tempor. Nisi magna dolore
 adipisicing eiusmod sint laborum magna ullamco et magna velit
-mollit. Esse occaecat ullamco excepteur velit veniam velit est.
+mollit.`,
+    `Esse occaecat ullamco excepteur velit veniam velit est.
 Et ex aliqua est dolor sunt non ut Lorem irure labore
 exercitation labore duis elit aliqua. Eiusmod cillum commodo ut
 esse aute adipisicing nulla culpa dolore ullamco duis. Enim
 mollit in ullamco irure do in proident. Excepteur sint aliquip
 nostrud labore fugiat eu. Minim nostrud adipisicing aute aliquip
-dolore aliquip incididunt. Qui cupidatat aliqua est sunt Lorem
+dolore aliquip incididunt.`,
+    `Qui cupidatat aliqua est sunt Lorem
 aliquip reprehenderit duis exercitation veniam elit. Duis
 incididunt nulla non Lorem Lorem aliqua ad dolore quis.
 Voluptate elit cupidatat velit est proident aute.`,
@@ -154,7 +162,8 @@ ipsum enim aliquip. Velit sint eiusmod esse id exercitation ea
 cupidatat dolor cillum ullamco. Fugiat do culpa elit cillum.
 Reprehenderit reprehenderit cillum reprehenderit sit proident
 ullamco tempor Lorem dolor. Quis Lorem laboris non consectetur
-enim commodo exercitation. Adipisicing cillum reprehenderit elit
+enim commodo exercitation.`,
+    `Adipisicing cillum reprehenderit elit
 nulla. Deserunt mollit tempor cillum mollit dolor Lorem proident
 pariatur aliquip. Sunt culpa ullamco ex ad ex incididunt ullamco
 laborum sit deserunt adipisicing. Consequat velit elit minim.
@@ -163,7 +172,8 @@ Dolor irure proident do proident nulla est enim duis.`,
 fugiat magna esse aliquip deserunt id id. Nulla exercitation
 laborum enim nulla irure id do cupidatat pariatur. Consequat
 sunt ut quis pariatur aliquip commodo proident ullamco commodo
-anim nisi eiusmod officia in ex. Pariatur veniam do sint anim
+anim nisi eiusmod officia in ex.`,
+    `Pariatur veniam do sint anim
 anim laborum ut ad nulla minim velit consectetur fugiat.
 Proident tempor proident consectetur adipisicing sunt aliquip
 sint magna cupidatat enim cupidatat commodo eu. Eiusmod
@@ -171,7 +181,8 @@ exercitation qui tempor labore excepteur nulla adipisicing eu
 eiusmod irure esse irure. Ex magna adipisicing excepteur
 incididunt quis do commodo sunt in. Dolore culpa laborum sit
 elit consequat magna ea adipisicing velit esse aliqua elit
-cupidatat veniam. Incididunt reprehenderit labore duis ullamco
+cupidatat veniam.`,
+    `Incididunt reprehenderit labore duis ullamco
 ullamco pariatur enim amet commodo eu voluptate proident id do.
 Eu in elit nulla velit officia. Ipsum proident commodo quis in
 ad veniam id incididunt eu ipsum fugiat aliquip velit minim
@@ -191,7 +202,8 @@ voluptate eiusmod labore non commodo sint fugiat elit sit ipsum.`,
 mollit. Magna culpa nostrud minim magna anim elit irure fugiat
 non quis enim ex nulla velit quis. Cillum nulla irure ut magna
 sunt sunt consectetur minim consequat sunt anim ad mollit
-consectetur ipsum. Sit dolor voluptate fugiat laborum in. Magna
+consectetur ipsum. Sit dolor voluptate fugiat laborum in.`,
+    `Magna
 esse anim mollit exercitation consectetur ad dolor elit commodo.
 Dolor nisi consequat pariatur Lorem dolore ad commodo laborum
 duis sint adipisicing ut aute. Culpa velit labore pariatur

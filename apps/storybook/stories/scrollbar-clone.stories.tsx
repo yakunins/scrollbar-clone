@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { ScrollbarClone } from "scrollbar-clone";
-import "./lorem-ipsum";
+import { LoremIpsum } from "./lorem-ipsum";
+
 import "scrollbar-clone";
 
 const meta: Meta<typeof ScrollbarClone> = {
@@ -88,11 +89,7 @@ function OneColExample(): React.ReactNode {
                 Array(20)
                     .fill("")
                     .map((i, idx) => {
-                        return (
-                            <p key={idx}>
-                                <lorem-ipsum />
-                            </p>
-                        );
+                        return <LoremIpsum key={idx} />;
                     }),
             ]}
         </div>
@@ -101,18 +98,15 @@ function OneColExample(): React.ReactNode {
 
 export const ThreeCol: Story = {
     render: () => {
-        const onRef: React.LegacyRef<HTMLDivElement> = (el) => {
-            const handleWheel = (e: Event): void => {
+        const preventScroll: React.Ref<HTMLElement> = (el) => {
+            const preventDefaultHandle = (e: Event): void => {
                 e.preventDefault();
                 e.stopPropagation();
             };
-            const handleTouch = (e: Event): void => {
-                e.preventDefault();
-                e.stopPropagation();
-            };
-            el?.addEventListener("wheel", handleWheel);
-            el?.addEventListener("touchmove", handleTouch);
+            el?.addEventListener("wheel", preventDefaultHandle);
+            el?.addEventListener("touchmove", preventDefaultHandle);
         };
+
         return (
             <div className="page">
                 <style>
@@ -219,9 +213,7 @@ export const ThreeCol: Story = {
                                     Array(5)
                                         .fill("")
                                         .map((i, idx) => (
-                                            <p key={idx}>
-                                                <lorem-ipsum />
-                                            </p>
+                                            <LoremIpsum key={idx} />
                                         )),
                                 ]}
                             </div>
@@ -230,9 +222,9 @@ export const ThreeCol: Story = {
                                 origin-selector=".panel-left-scrollable"
                                 style={{
                                     position: "fixed",
-                                    top: 0,
-                                    right: 0,
-                                    height: "90%",
+                                    top: "10%",
+                                    right: "0",
+                                    height: "80%",
                                     outline: "1px solid red",
                                 }}
                             />
@@ -251,11 +243,7 @@ export const ThreeCol: Story = {
                         {[
                             Array(20)
                                 .fill("")
-                                .map((i, idx) => (
-                                    <p key={idx}>
-                                        <lorem-ipsum />
-                                    </p>
-                                )),
+                                .map((i, idx) => <LoremIpsum key={idx} />),
                         ]}
                     </div>
                     <div className="panel-right-placeholder">
@@ -265,9 +253,7 @@ export const ThreeCol: Story = {
                                     Array(5)
                                         .fill("")
                                         .map((i, idx) => (
-                                            <p key={idx}>
-                                                <lorem-ipsum />
-                                            </p>
+                                            <LoremIpsum key={idx} />
                                         )),
                                 ]}
                             </div>
@@ -289,8 +275,8 @@ export const ThreeCol: Story = {
                         {`
                         .portal {
                             position: fixed;
-                            top: 10vmin;
-                            left: 10vmin;
+                            top: 10vmax;
+                            left: 5vmax;
                             background: #fff;
                             box-shadow: 0 0 10px rgba(127,127,127,.5);
                             border-radius: .5rem;
@@ -299,11 +285,11 @@ export const ThreeCol: Story = {
                         }
                     `}
                     </style>
-                    <div className="portal prevent-scroll" ref={onRef}>
-                        <div>portal 1 content (prevent-scroll)</div>
+                    <div className="portal" ref={preventScroll}>
+                        <div>portal#1 with prevent-scroll</div>
                     </div>
-                    <div className="portal" style={{ top: "25vmin" }}>
-                        <div>portal 2 content</div>
+                    <div className="portal" style={{ top: "15vmax" }}>
+                        <div>portal#2 content</div>
                     </div>
                 </div>
             </div>

@@ -11,7 +11,7 @@ interface ScrollbarCloneAttributes extends React.HTMLAttributes<HTMLElement> {
 export type ScrollbarClone = React.FC<ScrollbarCloneAttributes>;
 
 export const ScrollbarClone: ScrollbarClone = (props) => {
-    return <scrollbar-clone {...props} />;
+    return <scrollbar-clone {...props} {...{ class: props.className }} />;
 };
 
 ScrollbarClone.displayName = "ScrollbarClone";

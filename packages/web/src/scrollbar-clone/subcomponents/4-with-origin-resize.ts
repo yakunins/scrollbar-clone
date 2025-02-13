@@ -1,5 +1,5 @@
 import { WithClone } from "./3-with-clone";
-import { get, getScrollbarInfo, onNextRaf } from "./utils";
+import { get, getScrollbarInfo, onRaf, onNextRaf } from "./utils";
 
 export class WithOriginResize extends WithClone {
     public handleResize: () => void;
@@ -10,11 +10,8 @@ export class WithOriginResize extends WithClone {
         super();
         this.handleResize = handleResize.bind(this);
         this.originResizeObserver = new ResizeObserver(() => {
-            this.handleResize();
-        });
-        this.originResizeObserver = new ResizeObserver(() => {
             if (this.originResizeTimeout) return;
-            this.originResizeTimeout = requestAnimationFrame(() => {
+            this.originResizeTimeout = onRaf(() => {
                 this.handleResize();
                 this.originResizeTimeout = null;
             });
@@ -26,13 +23,13 @@ export class WithOriginResize extends WithClone {
         onNextRaf(handleResize.bind(this)); // Wait for next animation frame after render
         if (this.origin.el) {
             this.originResizeObserver?.observe(this.origin.el);
-            addWindowListener.bind(this)();
+            addListener.bind(this)();
         }
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        removeWindowListener.bind(this)();
+        removeListener.bind(this)();
         this.originResizeObserver?.disconnect();
     }
 }
@@ -43,27 +40,25 @@ function handleResize(this: WithOriginResize): void {
     const { yVisibleRatio } = getScrollbarInfo(this.origin.el);
     const { height: cloneHeight } = getScrollbarInfo(this.clone.el);
 
-    if (!yVisibleRatio) return;
-
+    if (!yVisibleRatio) return; // no data
     this.origin.yVisibleRatio = yVisibleRatio;
     const cloneContentHeight = cloneHeight / yVisibleRatio;
 
-    if (this.clone.content.height === cloneContentHeight) return;
-
+    if (this.clone.content.height === cloneContentHeight) return; // clone wasn't resized
     this.clone.content.height = cloneContentHeight;
-    this.clone.content.el.style.height = `${this.clone.content.height}px`;
 
-    // if (this.handleScroll) this.handleScroll();
+    if (yVisibleRatio === 1) return; // prevent flickering effect on height reduce
+    this.clone.content.el.style.height = `${this.clone.content.height}px`;
 }
 
-function addWindowListener(this: WithOriginResize): void {
+function addListener(this: WithOriginResize): void {
     if (this.origin.el === get.document(this.origin.el!))
         get
             .window(this.origin.el!)
             ?.addEventListener("resize", this.handleResize);
 }
 
-function removeWindowListener(this: WithOriginResize): void {
+function removeListener(this: WithOriginResize): void {
     if (this.origin.el === get.document(this.origin.el!))
         get
             .window(this.origin.el!)

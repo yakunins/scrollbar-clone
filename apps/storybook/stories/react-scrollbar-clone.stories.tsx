@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { ScrollbarClone, Lorem } from "react-scrollbar-clone";
+import { ScrollbarClone } from "react-scrollbar-clone";
+import { LoremIpsum } from "./lorem-ipsum";
 
 const meta: Meta<typeof ScrollbarClone> = {
     title: "React/react-scrollbar-clone",
@@ -31,7 +32,7 @@ export const OneCol: Story = {
             </style>
             <div className="fixed-header">global navigation</div>
             <ScrollbarClone
-                disable-scroll
+                disable-scroll="false"
                 id="test"
                 show-origin-scrollbar="false"
                 style={{
@@ -41,12 +42,12 @@ export const OneCol: Story = {
                     right: 0,
                 }}
             />
-            <Lorem />
-            <Lorem />
-            <Lorem />
-            <Lorem />
-            <Lorem />
-            <Lorem />
+            <LoremIpsum />
+            <LoremIpsum />
+            <LoremIpsum />
+            <LoremIpsum />
+            <LoremIpsum />
+            <LoremIpsum />
         </div>
     ),
     name: "one column",

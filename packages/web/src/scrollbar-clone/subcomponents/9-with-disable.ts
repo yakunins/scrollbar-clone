@@ -1,9 +1,8 @@
 import { WithSyncScroll } from "./8-with-sync-scroll";
 
 /*
- * Disable scroll by setting:
- * 1. origin style to have "overflow-y: hidden"
- * 2. clone scrollbar to have "pointer-events: none"
+ * Disables scroll both on clone and origin.
+ * If true, attribute "data-disable-scroll" to be added onto origin.
  */
 
 const attrName = "disable-scroll";

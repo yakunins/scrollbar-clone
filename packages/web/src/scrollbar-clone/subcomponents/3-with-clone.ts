@@ -71,6 +71,20 @@ const cloneCSS = (id: string | number): string => `
     overflow-x: hidden;
     overflow-y: auto;
 }
+/* disable scroll */
+[data-scrollbar-clone="origin:${id}"] {
+    &[data-disable-scroll*="true"] { overflow-y: hidden; }
+}
+[data-scrollbar-clone="clone:${id}"] {
+    &[disable-scroll*="true"]:after {
+        content: "";
+        cursor: default;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+    }
+}
 `;
 
 const cloneContentCSS = `
@@ -81,22 +95,11 @@ div {
 }
 `;
 
-const disableScrollCSS = (id: string | number): string => `
-[data-scrollbar-clone="origin:${id}"] {
-    &[data-disable-scroll*="true"] { overflow-y: hidden; }
-}
-[data-scrollbar-clone="clone:${id}"] {
-    &[disable-scroll*="true"] { pointer-events: none; }
-}
-`;
-
 function setCloneCSS(this: WithClone): void {
     if (this.contains(this.clone.styleEl))
         this.removeChild(this.clone.styleEl!);
 
-    this.clone.styleEl = createStyleEl(
-        cloneCSS(this.cloneId) + disableScrollCSS(this.cloneId)
-    );
+    this.clone.styleEl = createStyleEl(cloneCSS(this.cloneId));
     this.appendChild(this.clone.styleEl);
 }
 
