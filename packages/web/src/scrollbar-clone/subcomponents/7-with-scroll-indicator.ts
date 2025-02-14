@@ -1,7 +1,7 @@
 import { WithShowOriginScrollbar } from "./6-with-show-origin-scrollbar";
 import { throttle } from "./utils";
 
-const scrollIndicatorTimeout = 200;
+const scrollIndicatorTimeout = 100;
 
 export class WithDataScrolling extends WithShowOriginScrollbar {
     public _indicatorTimeout: ReturnType<typeof setTimeout> | null;

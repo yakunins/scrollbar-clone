@@ -20,7 +20,7 @@ export class WithOriginResize extends WithClone {
 
     connectedCallback(): void {
         super.connectedCallback();
-        onNextRaf(handleResize.bind(this)); // Wait for next animation frame after render
+        onNextRaf(handleResize.bind(this)); // wait for next animation frame after render
         if (this.origin.el) {
             this.originResizeObserver?.observe(this.origin.el);
             addListener.bind(this)();
@@ -34,7 +34,7 @@ export class WithOriginResize extends WithClone {
     }
 }
 
-// Sync clone's slider size with origin
+// sync clone's scrollbar thumb size
 function handleResize(this: WithOriginResize): void {
     if (!this.origin.el) return;
     const { yVisibleRatio } = getScrollbarInfo(this.origin.el);
@@ -47,7 +47,7 @@ function handleResize(this: WithOriginResize): void {
     if (this.clone.content.height === cloneContentHeight) return; // clone wasn't resized
     this.clone.content.height = cloneContentHeight;
 
-    if (yVisibleRatio === 1) return; // prevent flickering effect on height reduce
+    if (yVisibleRatio === 1) return; // prevent clone's flickering on height reduce
     this.clone.content.el.style.height = `${this.clone.content.height}px`;
 }
 

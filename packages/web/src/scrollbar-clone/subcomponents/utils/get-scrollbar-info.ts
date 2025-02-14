@@ -3,7 +3,7 @@ import { round } from "./round";
 import { min, max } from "./min-max";
 import { getStyle } from "./get-style";
 
-type ScrollbarInfo = {
+export type ScrollbarInfo = {
     height: number;
     contentHeight: number;
     y: number;

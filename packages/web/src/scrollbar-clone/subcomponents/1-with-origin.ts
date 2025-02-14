@@ -7,6 +7,7 @@ export class WithOrigin extends HTMLElement {
     static get observedAttributes(): string[] {
         return [attrName];
     }
+    public debug: boolean;
     public origin: {
         selector: string;
         el: HTMLElement | null;
@@ -15,11 +16,12 @@ export class WithOrigin extends HTMLElement {
     };
     public setOrigin: () => void;
 
-    constructor() {
+    constructor(debug = false) {
         if (document.compatMode === "BackCompat")
             console.warn(`<scrollbar-clone>: quirks mode is not supported`);
 
         super();
+        this.debug = debug;
         this.setOrigin = setOrigin.bind(this);
         this.origin = {
             selector: defaultSelector,
@@ -30,9 +32,7 @@ export class WithOrigin extends HTMLElement {
 
     connectedCallback(): void {
         this.setOrigin();
-
-        // data-user-agent="browser_chrome_116__device_type_mobile"
-        this.dataset.ua = getUserAgent();
+        this.dataset.ua = getUserAgent(); // data-ua="browser_chrome_116__device_type_mobile"
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {

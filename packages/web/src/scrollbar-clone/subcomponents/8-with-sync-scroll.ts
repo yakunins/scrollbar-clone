@@ -1,12 +1,12 @@
 import { WithDataScrolling } from "./7-with-scroll-indicator";
-import { getScrollbarInfo, onNextRaf, round } from "./utils";
+import { getScrollbarInfo, ScrollbarInfo, onNextRaf, round } from "./utils";
 
 const scrollEmitTimeout = 50;
 
 export class WithSyncScroll extends WithDataScrolling {
     public handleScroll: (e?: Event) => void;
     public _scrollEmitter: HTMLElement | null;
-    public _scrollEmitterTimeoutId: ReturnType<typeof setTimeout> | null;
+    public _scrollEmitterTimeout: ReturnType<typeof setTimeout> | null;
     public scrolledRatio: number;
     public cloneScrollDisabled: boolean;
 
@@ -17,17 +17,20 @@ export class WithSyncScroll extends WithDataScrolling {
         this.scrolledRatio = 0;
         this.cloneScrollDisabled = false;
         this._scrollEmitter = null;
-        this._scrollEmitterTimeoutId = null;
+        this._scrollEmitterTimeout = null;
     }
 
-    // Supress handling of scroll events subsequently emitted by `el.scrollTop = ...`
-    suppressScrollHandler(nextScrollEmitter: HTMLElement): boolean {
+    // detect scroll events subsequently emitted by `el.scrollTop = ...`,
+    // prevent infinite loop of clone-to-origin scrolls
+    suppressScrollHandling(nextScrollEmitter: HTMLElement): boolean {
         if (this._scrollEmitter && this._scrollEmitter !== nextScrollEmitter)
             return true;
 
-        clearTimeout(this._scrollEmitterTimeoutId!);
+        if (this._scrollEmitterTimeout)
+            clearTimeout(this._scrollEmitterTimeout);
+
         this._scrollEmitter = nextScrollEmitter;
-        this._scrollEmitterTimeoutId = setTimeout(() => {
+        this._scrollEmitterTimeout = setTimeout(() => {
             this._scrollEmitter = null;
         }, scrollEmitTimeout);
 
@@ -36,7 +39,7 @@ export class WithSyncScroll extends WithDataScrolling {
 
     connectedCallback(): void {
         super.connectedCallback();
-        onNextRaf(handleScroll.bind(this, undefined)); // Wait for next animation frame after render
+        onNextRaf(handleScroll.bind(this, undefined)); // skip one animation frame on first render
         addListenters.bind(this)();
     }
 
@@ -46,44 +49,47 @@ export class WithSyncScroll extends WithDataScrolling {
     }
 }
 
-// Handler to sync scrollbars position
+// handler to sync scrollbar position
 function handleScroll(this: WithSyncScroll, e?: Event): void {
     if (!this.origin.el) return;
 
-    this.handleResize();
+    this.handleResize(); // sync clone's scrollbar thumb size
 
     let from, to;
     if (e?.target === this.clone.el) {
-        // scroll fired on clone
+        // clone → origin
         from = this.clone.el;
         to = this.origin.el;
     } else {
-        // scroll fired on origin
+        // origin → clone
         from = this.origin.el;
         to = this.clone.el;
     }
 
-    // prevent handling scroll events emmited by `el.scrollTop = ...`
-    if (this.suppressScrollHandler(from)) return;
+    // prevent infinte loop of scroll events
+    if (this.suppressScrollHandling(from)) return;
 
-    const { yIsScrollable } = getScrollbarInfo(this.origin.el);
+    const originInfo = getScrollbarInfo(this.origin.el);
 
     // if origin is not scrollable...
-    if (!yIsScrollable) {
-        // ...make clone unscrollable
+    if (!originInfo.yIsScrollable) {
+        // ...stick clone's scrollbar to last known position
         this.clone.el.scrollTop =
-            this.scrolledRatio * getScrollbarInfo(this.clone.el).yMax; // stick to last known scrollbar position
+            this.scrolledRatio * getScrollbarInfo(this.clone.el).yMax;
         return;
     }
 
-    const { yScrolledRatio: fromScrolledRatio } = getScrollbarInfo(from);
-    const { yScrolledRatio: toScrolledRatio, yMax: toScrollableHeight } =
-        getScrollbarInfo(to);
+    const cloneInfo = getScrollbarInfo(this.clone.el);
+    const info = (el: HTMLElement | null): ScrollbarInfo =>
+        el === this.origin.el ? originInfo : cloneInfo;
 
-    if (fromScrolledRatio === toScrolledRatio) return; // origin and clone scroll positions already in sync
+    const { yScrolledRatio: scrolledFrom } = info(from);
+    const { yScrolledRatio: scrolledTo, yMax: scrollHeight } = info(to);
 
-    this.scrolledRatio = fromScrolledRatio;
-    to.scrollTop = round(this.scrolledRatio * toScrollableHeight);
+    if (scrolledFrom === scrolledTo) return; // origin and clone scroll positions already in sync
+
+    this.scrolledRatio = scrolledFrom;
+    to.scrollTop = round(this.scrolledRatio * scrollHeight);
 
     // set "data-scrolling" attribute
     if (e) this.setDataScrolling();

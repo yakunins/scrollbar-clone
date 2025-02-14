@@ -1,9 +1,6 @@
 import { WithId } from "./2-with-id";
 
-/*
- * Prevents collapsing scrollbar clone into nothing when zoom level < 33%
- */
-const cloneContentWidth = "5px";
+const cloneContentWidth = "5px"; // prevent scrollbar clone collapse into nothing with zoom level < 33%
 
 export class WithClone extends WithId {
     public clone: {
@@ -35,7 +32,7 @@ export class WithClone extends WithId {
     connectedCallback(): void {
         super.connectedCallback();
 
-        if (!this.origin.el) return; // Exit fast if no origin
+        if (!this.origin.el) return; // exit fast if no origin
 
         this.appendChild(this.clone.el);
         setCloneCSS.bind(this)();
