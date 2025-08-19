@@ -1,6 +1,6 @@
 # Scrollbar Clone
 
-[![npm version](https://img.shields.io/npm/v/scrollbar-clone.svg](https://www.npmjs.com/package/scrollbar-clone)
+[![npm version](https://img.shields.io/npm/v/scrollbar-clone.svg)](https://www.npmjs.com/package/scrollbar-clone)
 
 Lightweight web component that allows scrollbar to have custom margins, positioning, etc.  
 It effectively transforms the scrollbar into a regular HTML element
