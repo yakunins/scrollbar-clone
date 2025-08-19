@@ -1,13 +1,14 @@
 import { WithOrigin } from "./1-with-origin";
 
 const attrName = "id";
+const attrInitialValue = 0;
 
 export class WithId extends WithOrigin {
     static get observedAttributes(): string[] {
         return [...WithOrigin.observedAttributes, attrName];
     }
 
-    static instanceCounter = 0;
+    static instanceCounter = attrInitialValue;
     public cloneId: number | string;
 
     constructor() {
