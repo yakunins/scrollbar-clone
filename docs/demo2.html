@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Demo 2 — Three column layout | scrollbar-clone</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            type="module"
+            src="https://unpkg.com/scrollbar-clone@0.0.5/dist/index.mjs"
+        ></script>
+        <style>
+            :root {
+                --header-height: 56px;
+                --panel-left-width: 200px;
+                --panel-right-width: 200px;
+                --thumb-bg: rgba(127, 127, 127, 0.5);
+            }
+
+            .page {
+                margin-top: var(--header-height);
+            }
+
+            .panels {
+                display: grid;
+                grid-template-columns:
+                    var(--panel-left-width)
+                    1fr
+                    var(--panel-right-width);
+            }
+
+            .panel-left,
+            .panel-right {
+                position: fixed;
+                top: var(--header-height);
+                height: calc(100dvh - var(--header-height));
+            }
+            .panel-left {
+                width: var(--panel-left-width);
+            }
+            .panel-right {
+                width: var(--panel-right-width);
+                right: 0;
+            }
+
+            .containing-block {
+                will-change: transform;
+            }
+
+            .panel-left-scrollable,
+            .panel-right-scrollable {
+                width: 100%;
+                height: 100%;
+                overflow-y: scroll;
+            }
+
+            .panel-left-scrollable p,
+            .panel-right-scrollable p,
+            .panel-center p {
+                padding: 0.75rem;
+                line-height: 1.5;
+                font-size: 0.9rem;
+                color: #555;
+            }
+
+            /* scrollbar-clone custom thumb styling */
+            scrollbar-clone[data-ua*='device_type_unknown'] {
+                ::-webkit-scrollbar {
+                    background-image: none;
+                }
+                ::-webkit-scrollbar-thumb {
+                    background-color: var(--thumb-bg);
+                }
+                ::-webkit-scrollbar-track {
+                    background-color: transparent;
+                }
+            }
+            scrollbar-clone[data-ua*='device_type_unknown'][data-ua*='firefox']
+                * {
+                scrollbar-color: var(--thumb-bg) transparent;
+                scrollbar-width: thin;
+            }
+
+            /* show scrollbar-clone on panel hover */
+            .panel-left:hover #scrollbar-left,
+            .panel-center:hover #scrollbar-center,
+            .panel-right:hover #scrollbar-right {
+                opacity: 1;
+            }
+
+            /* portal overlay */
+            .portal {
+                position: fixed;
+                top: 10vmax;
+                left: 5vmax;
+                background: #fff;
+                box-shadow: 0 0 10px rgba(127, 127, 127, 0.5);
+                border-radius: 0.5rem;
+                padding: 1rem 2rem;
+                z-index: 100;
+            }
+        </style>
+    </head>
+    <body class="demo-2">
+        <header class="header">
+            <h1><a href="index.html">&lt;scrollbar-clone&gt;</a></h1>
+            <nav>
+                <a href="demo1.html">Demo 1</a>
+                <a href="demo2.html">Demo 2</a>
+            </nav>
+            <span class="spacer"></span>
+            <a href="https://www.npmjs.com/package/scrollbar-clone">npm</a>
+            <a href="https://github.com/yakunins/scrollbar-clone">GitHub</a>
+        </header>
+
+        <div class="page">
+            <section class="panels">
+                <!-- Left panel -->
+                <div class="panel-left-placeholder">
+                    <div class="panel-left containing-block">
+                        <div
+                            class="panel-left-scrollable"
+                            id="panel-left-scroll"
+                        ></div>
+                        <scrollbar-clone
+                            id="scrollbar-left"
+                            origin-selector=".panel-left-scrollable"
+                            style="
+                                position: fixed;
+                                top: 0%;
+                                right: 0;
+                                height: 100%;
+                            "
+                        ></scrollbar-clone>
+                    </div>
+                </div>
+
+                <!-- Center panel -->
+                <div class="panel-center" id="panel-center-content">
+                    <scrollbar-clone
+                        id="scrollbar-center"
+                        style="
+                            height: calc(100dvh - var(--header-height));
+                            position: fixed;
+                            top: var(--header-height);
+                            right: var(--panel-right-width);
+                        "
+                    ></scrollbar-clone>
+                </div>
+
+                <!-- Right panel -->
+                <div class="panel-right-placeholder">
+                    <div class="panel-right containing-block">
+                        <div
+                            class="panel-right-scrollable"
+                            id="panel-right-scroll"
+                        ></div>
+                        <scrollbar-clone
+                            id="scrollbar-right"
+                            origin-selector=".panel-right-scrollable"
+                            style="
+                                position: fixed;
+                                top: 0;
+                                right: 0;
+                                height: 100%;
+                            "
+                        ></scrollbar-clone>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Portal overlays -->
+            <div class="portal" id="portal-prevent-scroll">
+                <div>portal #1 with prevent-scroll</div>
+            </div>
+            <div class="portal" style="top: 15vmax">
+                <div>portal #2 content</div>
+            </div>
+        </div>
+
+        <script>
+            const lorem =
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+            const short =
+                'Cras mattis consectetur purus sit amet fermentum. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo.';
+
+            function fillContent(el, paragraphs) {
+                const texts = [lorem, short];
+                for (let i = 0; i < paragraphs; i++) {
+                    const p = document.createElement('p');
+                    p.textContent = texts[i % texts.length];
+                    el.appendChild(p);
+                }
+            }
+
+            fillContent(document.getElementById('panel-left-scroll'), 5);
+            fillContent(document.getElementById('panel-center-content'), 20);
+            fillContent(document.getElementById('panel-right-scroll'), 5);
+
+            // Prevent scroll on portal #1
+            const portal = document.getElementById('portal-prevent-scroll');
+            portal.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            portal.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        </script>
+    </body>
+</html>

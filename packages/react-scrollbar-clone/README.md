@@ -16,5 +16,5 @@ import { ScrollbarClone } from "react-scrollbar-clone";
 
 Examples:
 
--   <a href="https://codesandbox.io/p/sandbox/m5mjh4">scrollbar position example</a>
--   tri-column layout
+-   [Page scrollbar demo](https://yakunins.github.io/scrollbar-clone/demo1.html)
+-   [Three-column layout demo](https://yakunins.github.io/scrollbar-clone/demo2.html)

@@ -3,276 +3,84 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>scrollbar-clone demo</title>
-    <script type="module" src="https://unpkg.com/scrollbar-clone@0.0.5/dist/index.mjs"></script>
+    <title>scrollbar-clone</title>
+    <link rel="stylesheet" href="style.css" />
     <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            color: #333;
-            background: #f5f5f5;
+        .landing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: calc(100vh - 56px);
+            text-align: center;
+            padding: 2rem;
         }
-
-        /* Header */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 56px;
+        .landing h2 {
+            font-size: 2rem;
+            margin-bottom: .5rem;
+        }
+        .landing p {
+            color: #666;
+            max-width: 480px;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        .demo-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .demo-link {
+            display: block;
+            padding: 1rem 2rem;
             background: #1a1a2e;
             color: #fff;
-            display: flex;
-            align-items: center;
-            padding: 0 1.5rem;
-            z-index: 10;
-            gap: 1rem;
-        }
-        .header h1 { font-size: 1.1rem; font-weight: 600; }
-        .header a {
-            color: rgba(255,255,255,.7);
             text-decoration: none;
-            font-size: .85rem;
-        }
-        .header a:hover { color: #fff; }
-        .header .spacer { flex: 1; }
-
-        /* Layout */
-        .main { margin-top: 56px; }
-
-        /* Demo 1: single column */
-        .demo-single {
-            padding: 2rem;
-            min-height: 100vh;
-            position: relative;
-        }
-        .demo-single h2 {
-            font-size: 1.3rem;
-            margin-bottom: .5rem;
-        }
-        .demo-single p.desc {
-            color: #666;
-            margin-bottom: 1.5rem;
-            max-width: 600px;
-            line-height: 1.5;
-        }
-        .controls {
-            position: fixed;
-            top: 72px;
-            left: 1.5rem;
-            background: #fff;
-            border: 1px solid #ddd;
             border-radius: 8px;
-            padding: .75rem 1rem;
-            z-index: 5;
-            font-size: .85rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,.08);
+            font-size: .95rem;
+            transition: background .2s;
         }
-        .controls label { cursor: pointer; display: block; margin: .25rem 0; }
-        .controls input[type="checkbox"] { margin-right: .5rem; }
-
-        .content-block {
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 1rem 0;
-        }
-        .content-block p {
-            margin-bottom: 1rem;
-            line-height: 1.6;
-            color: #444;
-        }
-
-        /* Demo 2: panels */
-        .demo-panels {
-            display: grid;
-            grid-template-columns: 220px 1fr 220px;
-            min-height: 100vh;
-            border-top: 2px solid #ddd;
-        }
-        .panel {
-            position: relative;
-            border-right: 1px solid #ddd;
-        }
-        .panel:last-child { border-right: none; }
-        .panel-label {
-            position: sticky;
-            top: 56px;
-            background: #e8e8e8;
-            padding: .5rem .75rem;
+        .demo-link:hover { background: #2a2a4e; }
+        .demo-link small {
+            display: block;
+            color: rgba(255,255,255,.6);
             font-size: .75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: #666;
-            z-index: 2;
-        }
-        .panel-scroll {
-            height: calc(100vh - 56px - 32px);
-            overflow-y: auto;
-            position: sticky;
-            top: calc(56px + 32px);
-        }
-        .panel-scroll p {
-            padding: .75rem;
-            line-height: 1.5;
-            font-size: .9rem;
-            color: #555;
-        }
-
-        /* scrollbar-clone fade effect */
-        scrollbar-clone {
-            opacity: 0;
-            transition: opacity .3s .15s;
-        }
-        scrollbar-clone:hover,
-        scrollbar-clone[data-scrolling] {
-            opacity: 1;
-            transition: opacity 0s 0s;
-        }
-
-        /* Section divider */
-        .section-divider {
-            text-align: center;
-            padding: 3rem 1rem;
-            background: #fff;
-            border-top: 2px solid #ddd;
-        }
-        .section-divider h2 {
-            font-size: 1.3rem;
-            margin-bottom: .5rem;
-        }
-        .section-divider p {
-            color: #666;
-            max-width: 500px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        @media (max-width: 768px) {
-            .demo-panels {
-                grid-template-columns: 1fr;
-            }
-            .panel-scroll {
-                height: 50vh;
-                position: static;
-            }
+            margin-top: .25rem;
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <h1>&lt;scrollbar-clone&gt;</h1>
+        <h1><a href="index.html">&lt;scrollbar-clone&gt;</a></h1>
+        <nav>
+            <a href="demo1.html">Demo 1</a>
+            <a href="demo2.html">Demo 2</a>
+        </nav>
         <span class="spacer"></span>
         <a href="https://www.npmjs.com/package/scrollbar-clone">npm</a>
         <a href="https://github.com/yakunins/scrollbar-clone">GitHub</a>
     </header>
 
     <div class="main">
-        <!-- Demo 1: Page-level scrollbar clone -->
-        <section class="demo-single">
-            <h2>Demo 1 — Page scrollbar</h2>
-            <p class="desc">
-                A <code>&lt;scrollbar-clone&gt;</code> mirrors the page scrollbar.
-                The original scrollbar is hidden; the clone is fixed on the right,
-                with a fade-in effect on hover and scroll.
-            </p>
-
-            <div class="controls">
-                <label>
-                    <input type="checkbox" id="toggle-disable" />
-                    disable-scroll
-                </label>
-                <label>
-                    <input type="checkbox" id="toggle-origin" />
-                    show-origin-scrollbar
-                </label>
-            </div>
-
-            <scrollbar-clone
-                id="page-scrollbar"
-                show-origin-scrollbar="false"
-                style="height: 100dvh; position: fixed; top: 0; right: 0;"
-            ></scrollbar-clone>
-
-            <div class="content-block" id="lorem-content"></div>
-        </section>
-
-        <!-- Divider -->
-        <div class="section-divider">
-            <h2>Demo 2 — Multi-panel layout</h2>
+        <section class="landing">
+            <h2>&lt;scrollbar-clone&gt;</h2>
             <p>
-                Three panels, each with its own <code>&lt;scrollbar-clone&gt;</code>.
-                Scroll any panel — the clone tracks independently.
+                A lightweight web component that clones a scrollbar,
+                allowing custom positioning, margins, and styling
+                without touching the original element.
             </p>
-        </div>
-
-        <!-- Demo 2: Three-column panel layout -->
-        <section class="demo-panels">
-            <div class="panel">
-                <div class="panel-label">Left panel</div>
-                <div class="panel-scroll" id="panel-left-scroll">
-                    <div id="panel-left-content"></div>
-                </div>
-                <scrollbar-clone
-                    id="scrollbar-left"
-                    origin-selector="#panel-left-scroll"
-                    style="position: absolute; top: 32px; right: 0; height: calc(100% - 32px);"
-                ></scrollbar-clone>
-            </div>
-            <div class="panel">
-                <div class="panel-label">Center panel</div>
-                <div class="panel-scroll" id="panel-center-scroll">
-                    <div id="panel-center-content"></div>
-                </div>
-                <scrollbar-clone
-                    id="scrollbar-center"
-                    origin-selector="#panel-center-scroll"
-                    style="position: absolute; top: 32px; right: 0; height: calc(100% - 32px);"
-                ></scrollbar-clone>
-            </div>
-            <div class="panel">
-                <div class="panel-label">Right panel</div>
-                <div class="panel-scroll" id="panel-right-scroll">
-                    <div id="panel-right-content"></div>
-                </div>
-                <scrollbar-clone
-                    id="scrollbar-right"
-                    origin-selector="#panel-right-scroll"
-                    style="position: absolute; top: 32px; right: 0; height: calc(100% - 32px);"
-                ></scrollbar-clone>
+            <div class="demo-links">
+                <a class="demo-link" href="demo1.html">
+                    Page scrollbar
+                    <small>Replace the native page scrollbar</small>
+                </a>
+                <a class="demo-link" href="demo2.html">
+                    Multi-panel layout
+                    <small>Three independent scrollbar clones</small>
+                </a>
             </div>
         </section>
     </div>
-
-    <script>
-        // Generate lorem ipsum paragraphs
-        const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
-        const short = "Cras mattis consectetur purus sit amet fermentum. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo.";
-
-        function fillContent(el, paragraphs) {
-            const texts = [lorem, short];
-            for (let i = 0; i < paragraphs; i++) {
-                const p = document.createElement("p");
-                p.textContent = texts[i % texts.length];
-                el.appendChild(p);
-            }
-        }
-
-        fillContent(document.getElementById("lorem-content"), 20);
-        fillContent(document.getElementById("panel-left-content"), 8);
-        fillContent(document.getElementById("panel-center-content"), 15);
-        fillContent(document.getElementById("panel-right-content"), 10);
-
-        // Controls
-        const clone = document.getElementById("page-scrollbar");
-
-        document.getElementById("toggle-disable").addEventListener("change", (e) => {
-            clone.setAttribute("disable-scroll", e.target.checked ? "true" : "false");
-        });
-
-        document.getElementById("toggle-origin").addEventListener("change", (e) => {
-            clone.setAttribute("show-origin-scrollbar", e.target.checked ? "true" : "false");
-        });
-    </script>
 </body>
 </html>
