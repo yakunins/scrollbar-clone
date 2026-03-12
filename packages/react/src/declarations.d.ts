@@ -4,7 +4,7 @@ interface ScrollbarCloneAttributes
     extends React.HTMLAttributes<HTMLElement> {
     class?: string;
     ref?: React.Ref<HTMLElement>;
-    "disable-scrollbar"?: string | boolean;
+    "disable-scroll"?: string | boolean;
     id?: string;
     "origin-selector"?: string;
     "show-origin-scrollbar"?: string | boolean;

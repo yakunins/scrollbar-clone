@@ -40,12 +40,12 @@ export class WithSyncScroll extends WithDataScrolling {
     connectedCallback(): void {
         super.connectedCallback();
         onNextRaf(() => this.handleScroll()); // skip one animation frame on first render
-        addListenters.call(this);
+        addListeners.call(this);
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        removeListenters.call(this);
+        removeListeners.call(this);
         if (this._scrollEmitterTimeout) clearTimeout(this._scrollEmitterTimeout);
         this._scrollEmitterTimeout = null;
         this._scrollEmitter = null;
@@ -98,14 +98,14 @@ function handleScroll(this: WithSyncScroll, e?: Event): void {
     if (e) this.setDataScrolling();
 }
 
-function addListenters(this: WithSyncScroll): void {
+function addListeners(this: WithSyncScroll): void {
     if (!this.origin.listenerEl) return;
 
     this.origin.listenerEl.addEventListener("scroll", this.handleScroll);
     this.clone.el.addEventListener("scroll", this.handleScroll);
 }
 
-function removeListenters(this: WithSyncScroll): void {
+function removeListeners(this: WithSyncScroll): void {
     if (!this.origin.listenerEl) return;
 
     this.origin.listenerEl.removeEventListener("scroll", this.handleScroll);

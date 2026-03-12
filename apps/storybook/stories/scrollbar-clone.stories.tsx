@@ -103,8 +103,14 @@ export const ThreeCol: Story = {
                 e.preventDefault();
                 e.stopPropagation();
             };
-            el?.addEventListener("wheel", preventDefaultHandle);
-            el?.addEventListener("touchmove", preventDefaultHandle);
+            if (el) {
+                el.addEventListener("wheel", preventDefaultHandle);
+                el.addEventListener("touchmove", preventDefaultHandle);
+                return () => {
+                    el.removeEventListener("wheel", preventDefaultHandle);
+                    el.removeEventListener("touchmove", preventDefaultHandle);
+                };
+            }
         };
 
         return (

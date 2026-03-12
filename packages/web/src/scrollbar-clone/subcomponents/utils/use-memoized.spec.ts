@@ -10,17 +10,21 @@ const wait = (delay = 1000): Promise<number> =>
     });
 
 test("useMemoized(fn): fn to be called once if same args", () => {
+    let counter = 0;
     const fn = (a: string, b: string): string => {
         counter++;
         return a + b;
     };
     const memoized = useMemoizedValue(fn);
-    let counter = 0;
     let result = "";
 
-    result = fn("a", "b");
+    result = memoized("a", "b");
     expect(result).toBe("ab");
     expect(counter).toBe(1);
+
+    result = memoized("a", "b");
+    expect(result).toBe("ab");
+    expect(counter).toBe(1); // use prev value
 
     result = memoized("c", "d");
     expect(result).toBe("cd");
