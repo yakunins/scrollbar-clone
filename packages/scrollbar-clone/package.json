@@ -18,7 +18,7 @@
     ],
     "scripts": {
         "build": "tsup src/index.ts --format esm,cjs --dts --external react",
-        "build:react": "cd ../react && npm run build",
+        "build:react": "cd ../react-scrollbar-clone && npm run build",
         "dev": "tsup src/index.ts --format esm,cjs --watch --onSuccess \"npm run build:react\" --dts --external react ",
         "lint": "eslint src/",
         "clean": "rimraf .turbo && rimraf node_modules && rimraf dist && rimraf playwright-report",

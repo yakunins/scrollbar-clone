@@ -13,14 +13,14 @@ const toNumber = (val: In): Out => {
 
 export const max = (...args: In[]): Out => {
     if (args.length < 1) return null;
-    const numbers = args.map(toNumber).filter((x) => x !== null) as number[];
+    const numbers = args.map(toNumber).filter((x) => x !== null);
     if (numbers.length < 1) return null;
     return Math.max(...numbers);
 };
 
 export const min = (...args: In[]): Out => {
     if (args.length < 1) return null;
-    const nums = args.map(toNumber).filter((x) => x !== null) as number[];
+    const nums = args.map(toNumber).filter((x) => x !== null);
     if (nums.length < 1) return null;
     return Math.min(...nums);
 };

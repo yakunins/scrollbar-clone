@@ -24,5 +24,8 @@ module.exports = {
         "eslint-comments/require-description": "off",
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/consistent-type-definitions": "off",
+        "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
+        "@typescript-eslint/prefer-nullish-coalescing": "off",
+        "@typescript-eslint/no-confusing-void-expression": "off",
     },
 };

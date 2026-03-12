@@ -18,3 +18,21 @@ Examples:
 
 -   <a href="https://codesandbox.io/p/sandbox/m5mjh4">scrollbar position example</a>
 -   tri-column layout
+
+## Project structure
+
+```
+packages/
+├── scrollbar-clone/          # Web component (npm: scrollbar-clone)
+├── react-scrollbar-clone/    # React wrapper (npm: react-scrollbar-clone)
+└── config/
+    ├── eslint/               # Shared ESLint configs
+    └── tsconfig/             # Shared TypeScript configs
+
+apps/
+└── storybook/                # Storybook dev environment & demos
+```
+
+- **`packages/scrollbar-clone/`** — core vanilla web component, zero dependencies
+- **`packages/react-scrollbar-clone/`** — thin React wrapper that re-exports the web component as a React element
+- **`packages/config/`** — internal shared tooling configs (not published)
