@@ -4,7 +4,7 @@ import { isEqual } from "./is-equal";
 type Memo<A, R> = {
     args?: A[];
     result?: R;
-    timestamp?: Date;
+    timestamp?: number;
 };
 
 type Callback<A extends any[], R> = (...args: A) => R;
@@ -22,22 +22,22 @@ export function useMemoizedValue<A extends any[], R>(
     function setCache(value: R, args: A): void {
         cached.result = value;
         cached.args = args;
-        cached.timestamp = new Date();
+        cached.timestamp = Date.now();
     }
 
     function isCacheExpired(): boolean {
         if (!cached.timestamp) return true;
-        return new Date().getTime() - cached.timestamp.getTime() > timeout;
+        return Date.now() - cached.timestamp > timeout;
     }
 
     function isCacheValid(args: A): boolean {
-        if (!cached.result || !isEqual(cached.args, args) || isCacheExpired())
+        if (cached.result === undefined || !isEqual(cached.args, args) || isCacheExpired())
             return false;
         return true;
     }
 
     return (...args) => {
-        if (isCacheValid(args)) return cached.result!;
+        if (isCacheValid(args)) return cached.result as R;
         const result = callback(...args);
         setCache(result, args);
         return result;

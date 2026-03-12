@@ -3,7 +3,7 @@
 type Callback<T extends any[]> = (...args: T) => void;
 type ThrottleState = {
     timeout?: ReturnType<typeof setTimeout>;
-    started?: Date;
+    started?: number;
 };
 
 export function throttle<T extends any[]>(
@@ -13,13 +13,13 @@ export function throttle<T extends any[]>(
     let state: ThrottleState = {};
     return (...args) => {
         if (!state.timeout || !state.started) {
-            state.started = new Date();
+            state.started = Date.now();
             state.timeout = setTimeout(() => {
                 callback(...args);
                 state = {};
             }, delay);
         } else {
-            const timePassed = new Date().getTime() - state.started.getTime();
+            const timePassed = Date.now() - state.started;
             clearTimeout(state.timeout);
             if (delay - timePassed < 0) {
                 callback(...args);

@@ -41,7 +41,7 @@ function OneColExample(): React.ReactNode {
                             setDisabled(!disabled);
                         }}
                         type="checkbox"
-                        value={disabled ? "true" : "false"}
+                        checked={disabled}
                     />
                     disable-scroll
                 </label>
@@ -52,7 +52,7 @@ function OneColExample(): React.ReactNode {
                             setOverflow(!overflow);
                         }}
                         type="checkbox"
-                        value={overflow ? "true" : "false"}
+                        checked={overflow}
                     />
                     html-overflow-hidden
                 </label>
