@@ -14,6 +14,6 @@ export const getStyle = (el: HTMLElement): CSSStyleDeclaration | undefined => {
             return window.getComputedStyle(el);
         }
     }
-    console.log("getStyle(): getComputedStyle is not avaliable");
+    console.warn("getStyle(): getComputedStyle is not available");
     return undefined;
 };

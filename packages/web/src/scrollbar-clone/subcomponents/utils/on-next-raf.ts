@@ -10,7 +10,7 @@ export const onRaf = (callback: Callback): number | null => {
             return window.requestAnimationFrame(callback);
         }
     }
-    console.warn("onRaf(): requestAnimationFrame is not avaliable");
+    console.warn("onRaf(): requestAnimationFrame is not available");
     return null;
 };
 
