@@ -36,8 +36,8 @@ const originCSS = (id: string | number): string => `
 function handleAttrChange(this: WithShowOriginScrollbar): void {
     const value = this.getAttribute(attrName);
 
-    if (value || value === "") this.showOriginScrollbar = true;
-    if (!value || value === "false") this.showOriginScrollbar = false;
+    if (value !== null && value !== "false") this.showOriginScrollbar = true;
+    else this.showOriginScrollbar = false;
 
     appendOriginCSS.bind(this)();
 }
