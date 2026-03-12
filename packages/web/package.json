@@ -26,15 +26,15 @@
         "test-server": "node ./test-server/serve"
     },
     "devDependencies": {
-        "@playwright/test": "^1.39.0",
-        "@types/node": "^20.9.0",
+        "@playwright/test": "^1.52.0",
+        "@types/node": "^22.15.0",
         "eslint-config-custom": "*",
-        "express": "^4.18.2",
-        "playwright": "^1.39.0",
+        "express": "^5.1.0",
+        "playwright": "^1.52.0",
         "tsconfig": "*",
-        "tsup": "^5.10.1",
-        "typescript": "^5.2.2",
-        "ua-parser-js": "^1.0.37"
+        "tsup": "^8.5.1",
+        "typescript": "^5.8.3",
+        "ua-parser-js": "^2.0.3"
     },
     "publishConfig": {
         "access": "public"

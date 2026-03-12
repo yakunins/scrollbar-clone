@@ -1,4 +1,5 @@
 import { dirname, join, resolve } from "path";
+import react from "@vitejs/plugin-react";
 
 function getAbsolutePath(value) {
     return dirname(require.resolve(join(value, "package.json")));
@@ -23,6 +24,8 @@ const config = {
     core: {},
 
     async viteFinal(config, { configType }) {
+        config.plugins = config.plugins || [];
+        config.plugins.push(react());
         return {
             ...config,
             define: { "process.env": {} },
