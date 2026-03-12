@@ -55,15 +55,17 @@ function handleResize(this: WithOriginResize): void {
 }
 
 function addListener(this: WithOriginResize): void {
-    if (this.origin.el === get.document(this.origin.el!))
+    if (!this.origin.el) return;
+    if (this.origin.el === get.document(this.origin.el))
         get
-            .window(this.origin.el!)
+            .window(this.origin.el)
             ?.addEventListener("resize", this.handleResize);
 }
 
 function removeListener(this: WithOriginResize): void {
-    if (this.origin.el === get.document(this.origin.el!))
+    if (!this.origin.el) return;
+    if (this.origin.el === get.document(this.origin.el))
         get
-            .window(this.origin.el!)
+            .window(this.origin.el)
             ?.removeEventListener("resize", this.handleResize);
 }

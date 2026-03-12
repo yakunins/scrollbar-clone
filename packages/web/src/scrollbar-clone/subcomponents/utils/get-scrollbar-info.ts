@@ -18,9 +18,10 @@ export const getScrollbarInfo = (el: HTMLElement): ScrollbarInfo => {
     const contentHeight = contentSize(el).y;
     const y = el.scrollTop;
     const yMax = contentHeight - height;
+    const style = getStyle(el);
     const yIsScrollable = !(
-        getStyle(el)?.overflowY === "hidden" ||
-        getStyle(el)?.overflow === "hidden"
+        style?.overflowY === "hidden" ||
+        style?.overflow === "hidden"
     );
 
     const info = {
@@ -28,8 +29,8 @@ export const getScrollbarInfo = (el: HTMLElement): ScrollbarInfo => {
         contentHeight,
         y,
         yMax,
-        yScrolledRatio: round(y / yMax),
-        yVisibleRatio: round(height / contentHeight),
+        yScrolledRatio: yMax > 0 ? round(y / yMax) : 0,
+        yVisibleRatio: contentHeight > 0 ? round(height / contentHeight) : 1,
         yIsScrollable,
     };
 

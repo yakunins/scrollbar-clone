@@ -18,7 +18,7 @@ export const isEqual = (x: any, y: any): boolean => {
             return false;
 
         for (const prop in x) {
-            if (y.hasOwnProperty(prop)) {
+            if (Object.prototype.hasOwnProperty.call(y, prop)) {
                 if (!isEqual(x[prop], y[prop])) return false;
             } else return false;
         }
