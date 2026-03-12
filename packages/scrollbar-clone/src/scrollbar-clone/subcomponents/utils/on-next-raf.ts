@@ -14,8 +14,13 @@ export const onRaf = (callback: Callback): number | null => {
     return null;
 };
 
-export const onNextRaf = (callback: Callback): number | null => {
-    return onRaf(() => {
-        onRaf(callback);
+export const onNextRaf = (callback: Callback): (() => void) => {
+    let innerId: number | null = null;
+    const outerId = onRaf(() => {
+        innerId = onRaf(callback);
     });
+    return () => {
+        if (outerId !== null) cancelAnimationFrame(outerId);
+        if (innerId !== null) cancelAnimationFrame(innerId);
+    };
 };

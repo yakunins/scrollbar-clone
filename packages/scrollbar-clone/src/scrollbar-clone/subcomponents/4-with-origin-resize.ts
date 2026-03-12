@@ -5,6 +5,7 @@ export class WithOriginResize extends WithClone {
     public handleResize: () => void;
     public originResizeObserver: ResizeObserver | null;
     originResizeTimeout: number | null = null;
+    private cancelNextRaf: (() => void) | null = null;
 
     constructor() {
         super();
@@ -21,7 +22,7 @@ export class WithOriginResize extends WithClone {
     connectedCallback(): void {
         super.connectedCallback();
         this.cleanupOriginResize();
-        onNextRaf(this.handleResize); // wait for next animation frame after render
+        this.cancelNextRaf = onNextRaf(this.handleResize); // wait for next animation frame after render
         if (this.origin.el) {
             this.originResizeObserver?.observe(this.origin.el);
             addListener.call(this);
@@ -39,6 +40,8 @@ export class WithOriginResize extends WithClone {
         if (this.originResizeTimeout !== null)
             cancelAnimationFrame(this.originResizeTimeout);
         this.originResizeTimeout = null;
+        this.cancelNextRaf?.();
+        this.cancelNextRaf = null;
     }
 }
 

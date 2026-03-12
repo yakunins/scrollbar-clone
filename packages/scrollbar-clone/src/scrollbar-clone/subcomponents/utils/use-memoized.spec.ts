@@ -59,7 +59,7 @@ test("useMemoized(fn, 100): fn to be called if 100ms passed", async () => {
     expect(result).toBe("cd");
     expect(counter).toBe(1);
 
-    await wait(timeout + 1);
+    await wait(timeout + 50);
 
     result = memoized("c", "d");
     expect(result).toBe("cd");

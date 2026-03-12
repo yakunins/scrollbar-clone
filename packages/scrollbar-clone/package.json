@@ -8,6 +8,11 @@
     "sideEffects": false,
     "license": "MIT",
     "homepage": "https://github.com/yakunins/scrollbar-clone",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yakunins/scrollbar-clone",
+        "directory": "packages/scrollbar-clone"
+    },
     "author": {
         "name": "Sergey Yakunin",
         "email": "s@yakunins.com",

@@ -9,6 +9,7 @@ export class WithSyncScroll extends WithDataScrolling {
     public _scrollEmitterTimeout: ReturnType<typeof setTimeout> | null;
     public scrolledRatio: number;
     public cloneScrollDisabled: boolean;
+    private cancelScrollRaf: (() => void) | null = null;
 
     constructor() {
         super();
@@ -39,13 +40,20 @@ export class WithSyncScroll extends WithDataScrolling {
 
     connectedCallback(): void {
         super.connectedCallback();
-        onNextRaf(() => this.handleScroll()); // skip one animation frame on first render
+        this.cleanupSyncScroll();
+        this.cancelScrollRaf = onNextRaf(() => this.handleScroll()); // skip one animation frame on first render
         addListeners.call(this);
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
+        this.cleanupSyncScroll();
+    }
+
+    private cleanupSyncScroll(): void {
         removeListeners.call(this);
+        this.cancelScrollRaf?.();
+        this.cancelScrollRaf = null;
         if (this._scrollEmitterTimeout) clearTimeout(this._scrollEmitterTimeout);
         this._scrollEmitterTimeout = null;
         this._scrollEmitter = null;
