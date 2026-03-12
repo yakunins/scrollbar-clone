@@ -46,6 +46,9 @@ export class WithSyncScroll extends WithDataScrolling {
     disconnectedCallback(): void {
         super.disconnectedCallback();
         removeListenters.bind(this)();
+        if (this._scrollEmitterTimeout) clearTimeout(this._scrollEmitterTimeout);
+        this._scrollEmitterTimeout = null;
+        this._scrollEmitter = null;
     }
 }
 

@@ -12,6 +12,12 @@ export class WithDataScrolling extends WithShowOriginScrollbar {
         this._indicatorTimeout = null;
         this.setDataScrolling = throttle(setScrolling.bind(this));
     }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        if (this._indicatorTimeout) clearTimeout(this._indicatorTimeout);
+        this._indicatorTimeout = null;
+    }
 }
 
 function setScrolling(this: WithDataScrolling): void {

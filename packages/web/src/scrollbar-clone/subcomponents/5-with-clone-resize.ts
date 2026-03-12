@@ -24,5 +24,8 @@ export class WithCloneResize extends WithOriginResize {
     disconnectedCallback(): void {
         super.disconnectedCallback();
         this.cloneResizeObserver?.disconnect();
+        if (this.cloneResizeTimeout !== null)
+            cancelAnimationFrame(this.cloneResizeTimeout);
+        this.cloneResizeTimeout = null;
     }
 }

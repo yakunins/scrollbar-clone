@@ -31,6 +31,9 @@ export class WithOriginResize extends WithClone {
         super.disconnectedCallback();
         removeListener.bind(this)();
         this.originResizeObserver?.disconnect();
+        if (this.originResizeTimeout !== null)
+            cancelAnimationFrame(this.originResizeTimeout);
+        this.originResizeTimeout = null;
     }
 }
 
