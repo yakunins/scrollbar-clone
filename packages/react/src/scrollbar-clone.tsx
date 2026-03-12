@@ -8,10 +8,12 @@ interface ScrollbarCloneAttributes extends React.HTMLAttributes<HTMLElement> {
     "show-origin-scrollbar"?: string | boolean;
 }
 
-export type ScrollbarClone = React.FC<ScrollbarCloneAttributes>;
-
-export const ScrollbarClone: ScrollbarClone = (props) => {
-    return <scrollbar-clone {...props} {...{ class: props.className }} />;
-};
+export const ScrollbarClone = React.memo(
+    React.forwardRef<HTMLElement, ScrollbarCloneAttributes>(
+        ({ className, ...rest }, ref) => {
+            return <scrollbar-clone ref={ref} {...rest} class={className} />;
+        }
+    )
+);
 
 ScrollbarClone.displayName = "ScrollbarClone";
