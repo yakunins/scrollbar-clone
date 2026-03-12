@@ -14,6 +14,10 @@ export const isEqual = (x: any, y: any): boolean => {
         typeof y === "object" &&
         y !== null
     ) {
+        if (Array.isArray(x) !== Array.isArray(y)) return false;
+        if (Array.isArray(x) && Array.isArray(y) && x.length !== y.length)
+            return false;
+
         if (Object.keys(x as object).length !== Object.keys(y as object).length)
             return false;
 

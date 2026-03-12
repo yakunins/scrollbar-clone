@@ -30,6 +30,7 @@ export class WithId extends WithOrigin {
 
     disconnectedCallback(): void {
         delete this.origin.el?.dataset.scrollbarClone;
+        delete this.dataset.scrollbarClone;
     }
 
     attributeChangedCallback(attr: string, _prev: string, next: string): void {

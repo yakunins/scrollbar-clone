@@ -1,18 +1,9 @@
 import { get } from "./get";
 
 export const getStyle = (el: HTMLElement): CSSStyleDeclaration | undefined => {
-    if (typeof getComputedStyle !== "undefined") {
-        return getComputedStyle(el);
-    }
-
-    if (typeof get.window(el)?.getComputedStyle !== "undefined") {
-        return get.window(el)?.getComputedStyle(el);
-    }
-
-    if (typeof window !== "undefined") {
-        if (typeof window.getComputedStyle !== "undefined") {
-            return window.getComputedStyle(el);
-        }
+    const win = get.window(el);
+    if (win?.getComputedStyle) {
+        return win.getComputedStyle(el);
     }
     console.warn("getStyle(): getComputedStyle is not available");
     return undefined;

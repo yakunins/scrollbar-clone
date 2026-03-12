@@ -41,12 +41,12 @@ test("useMemoized(fn): fn to be called once if same args", () => {
 
 test("useMemoized(fn, 100): fn to be called if 100ms passed", async () => {
     const timeout = 100;
+    let counter = 0;
     const fn = (a: string, b: string): string => {
         counter++;
         return a + b;
     };
     const memoized = useMemoizedValue(fn, timeout);
-    let counter = 0;
     let result = "";
 
     result = memoized("c", "d");

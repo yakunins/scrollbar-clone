@@ -21,8 +21,9 @@ function tryScrollbarThickness(el: HTMLElement): Thickness {
 function measureScrollbarThickness(el: HTMLElement): Thickness {
     const probeSize = 100;
 
-    const doc = get.document(el)!;
-    const body = get.body(el)!;
+    const doc = get.document(el);
+    const body = get.body(el);
+    if (!doc || !body) return { x: 17, y: 17 };
 
     const outer = doc.createElement("div");
     outer.style.position = "absolute";
