@@ -39,13 +39,13 @@ export class WithSyncScroll extends WithDataScrolling {
 
     connectedCallback(): void {
         super.connectedCallback();
-        onNextRaf(handleScroll.bind(this, undefined)); // skip one animation frame on first render
-        addListenters.bind(this)();
+        onNextRaf(() => this.handleScroll()); // skip one animation frame on first render
+        addListenters.call(this);
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        removeListenters.bind(this)();
+        removeListenters.call(this);
         if (this._scrollEmitterTimeout) clearTimeout(this._scrollEmitterTimeout);
         this._scrollEmitterTimeout = null;
         this._scrollEmitter = null;

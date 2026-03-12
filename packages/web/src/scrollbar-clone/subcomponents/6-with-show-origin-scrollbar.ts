@@ -18,12 +18,12 @@ export class WithShowOriginScrollbar extends WithCloneResize {
 
     connectedCallback(): void {
         super.connectedCallback();
-        handleAttrChange.bind(this)();
+        handleAttrChange.call(this);
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
         super.attributeChangedCallback(attr, _prev, _next);
-        if (attr === attrName || attr === "id") handleAttrChange.bind(this)();
+        if (attr === attrName || attr === "id") handleAttrChange.call(this);
     }
 }
 
@@ -39,7 +39,7 @@ function handleAttrChange(this: WithShowOriginScrollbar): void {
     if (value !== null && value !== "false") this.showOriginScrollbar = true;
     else this.showOriginScrollbar = false;
 
-    appendOriginCSS.bind(this)();
+    appendOriginCSS.call(this);
 }
 
 function appendOriginCSS(this: WithShowOriginScrollbar): void {

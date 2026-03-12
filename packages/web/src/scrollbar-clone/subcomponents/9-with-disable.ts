@@ -14,12 +14,12 @@ export class WithDisableScrollbar extends WithSyncScroll {
 
     connectedCallback(): void {
         super.connectedCallback();
-        handleAttrChange.bind(this)();
+        handleAttrChange.call(this);
     }
 
     attributeChangedCallback(attr: string, _prev: string, _next: string): void {
         super.attributeChangedCallback(attr, _prev, _next);
-        if (attr === attrName) handleAttrChange.bind(this)();
+        if (attr === attrName) handleAttrChange.call(this);
     }
 }
 

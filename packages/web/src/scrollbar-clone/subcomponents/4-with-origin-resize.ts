@@ -20,16 +20,16 @@ export class WithOriginResize extends WithClone {
 
     connectedCallback(): void {
         super.connectedCallback();
-        onNextRaf(handleResize.bind(this)); // wait for next animation frame after render
+        onNextRaf(this.handleResize); // wait for next animation frame after render
         if (this.origin.el) {
             this.originResizeObserver?.observe(this.origin.el);
-            addListener.bind(this)();
+            addListener.call(this);
         }
     }
 
     disconnectedCallback(): void {
         super.disconnectedCallback();
-        removeListener.bind(this)();
+        removeListener.call(this);
         this.originResizeObserver?.disconnect();
         if (this.originResizeTimeout !== null)
             cancelAnimationFrame(this.originResizeTimeout);
@@ -56,7 +56,7 @@ function handleResize(this: WithOriginResize): void {
 
 function addListener(this: WithOriginResize): void {
     if (!this.origin.el) return;
-    if (this.origin.el === get.document(this.origin.el))
+    if (this.origin.el === get.scrollingElement(this.origin.el))
         get
             .window(this.origin.el)
             ?.addEventListener("resize", this.handleResize);
@@ -64,7 +64,7 @@ function addListener(this: WithOriginResize): void {
 
 function removeListener(this: WithOriginResize): void {
     if (!this.origin.el) return;
-    if (this.origin.el === get.document(this.origin.el))
+    if (this.origin.el === get.scrollingElement(this.origin.el))
         get
             .window(this.origin.el)
             ?.removeEventListener("resize", this.handleResize);
