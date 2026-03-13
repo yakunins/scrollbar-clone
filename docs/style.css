@@ -58,6 +58,7 @@ body {
     margin-top: 56px;
 }
 
+.demo-1,
 .demo-2 {
     /* scrollbar-clone fade effect */
     scrollbar-clone {
