@@ -1,6 +1,5 @@
 import type { ReactiveController } from "lit";
 import type { ScrollbarClone } from "../scrollbar-clone";
-import { onRaf } from "../utils";
 
 export class CloneResizeController implements ReactiveController {
     private host: ScrollbarClone;
@@ -12,7 +11,7 @@ export class CloneResizeController implements ReactiveController {
         host.addController(this);
         this.observer = new ResizeObserver(() => {
             if (this.resizeTimeout) return;
-            this.resizeTimeout = onRaf(() => {
+            this.resizeTimeout = requestAnimationFrame(() => {
                 this.host.handleResize();
                 this.resizeTimeout = null;
             });

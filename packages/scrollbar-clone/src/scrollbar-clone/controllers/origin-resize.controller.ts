@@ -1,12 +1,13 @@
 import type { ReactiveController } from "lit";
 import type { ScrollbarClone } from "../scrollbar-clone";
-import { get, onRaf, onNextRaf } from "../utils";
+import { getScrollingElement, getWindow } from "../utils";
 
 export class OriginResizeController implements ReactiveController {
     private host: ScrollbarClone;
     private observer: ResizeObserver;
     private resizeTimeout: number | null = null;
-    private cancelNextRaf: (() => void) | null = null;
+    private initialRafId: number | null = null;
+    private aborted = false;
 
     private boundHandleResize = (): void => {
         this.host.handleResize();
@@ -17,7 +18,7 @@ export class OriginResizeController implements ReactiveController {
         host.addController(this);
         this.observer = new ResizeObserver(() => {
             if (this.resizeTimeout) return;
-            this.resizeTimeout = onRaf(() => {
+            this.resizeTimeout = requestAnimationFrame(() => {
                 this.host.handleResize();
                 this.resizeTimeout = null;
             });
@@ -26,7 +27,13 @@ export class OriginResizeController implements ReactiveController {
 
     hostConnected(): void {
         this.cleanup();
-        this.cancelNextRaf = onNextRaf(this.boundHandleResize);
+        this.aborted = false;
+        this.host.updateComplete.then(() => {
+            if (this.aborted) return;
+            this.initialRafId = requestAnimationFrame(
+                this.boundHandleResize
+            );
+        });
         if (this.host.originEl) {
             this.observer.observe(this.host.originEl);
             this.addWindowListener();
@@ -38,22 +45,24 @@ export class OriginResizeController implements ReactiveController {
     }
 
     private cleanup(): void {
+        this.aborted = true;
         this.removeWindowListener();
         this.observer.disconnect();
         if (this.resizeTimeout !== null)
             cancelAnimationFrame(this.resizeTimeout);
         this.resizeTimeout = null;
-        this.cancelNextRaf?.();
-        this.cancelNextRaf = null;
+        if (this.initialRafId !== null)
+            cancelAnimationFrame(this.initialRafId);
+        this.initialRafId = null;
     }
 
     private addWindowListener(): void {
         if (!this.host.originEl) return;
         if (
             this.host.originEl ===
-            get.scrollingElement(this.host.originEl)
+            getScrollingElement(this.host.originEl)
         )
-            get.window(this.host.originEl)?.addEventListener(
+            getWindow(this.host.originEl)?.addEventListener(
                 "resize",
                 this.boundHandleResize
             );
@@ -63,9 +72,9 @@ export class OriginResizeController implements ReactiveController {
         if (!this.host.originEl) return;
         if (
             this.host.originEl ===
-            get.scrollingElement(this.host.originEl)
+            getScrollingElement(this.host.originEl)
         )
-            get.window(this.host.originEl)?.removeEventListener(
+            getWindow(this.host.originEl)?.removeEventListener(
                 "resize",
                 this.boundHandleResize
             );

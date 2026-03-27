@@ -1,6 +1,12 @@
 import type { ReactiveController } from "lit";
 import type { ScrollbarClone } from "../scrollbar-clone";
-import { get, getUserAgent } from "../utils";
+import {
+    getDocument,
+    getBody,
+    getHtml,
+    getScrollingElement,
+    getUserAgent,
+} from "../utils";
 
 const defaultSelector = ":root";
 
@@ -23,16 +29,19 @@ export class OriginController implements ReactiveController {
 
         const el =
             this.host.closest(selector) ||
-            get.document(this.host)?.querySelector(selector);
+            getDocument(this.host)?.querySelector(selector);
 
         if (el) {
-            if (el === get.body(this.host) || el === get.html(this.host)) {
-                this.host.originEl = get.scrollingElement(
+            if (
+                el === getBody(this.host) ||
+                el === getHtml(this.host)
+            ) {
+                this.host.originEl = getScrollingElement(
                     this.host
                 ) as HTMLElement;
                 this.host.originListenerEl =
                     this.host.originEl?.parentElement ||
-                    get.document(this.host);
+                    getDocument(this.host);
                 return;
             }
             this.host.originEl = el as HTMLElement;

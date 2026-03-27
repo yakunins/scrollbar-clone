@@ -1,6 +1,6 @@
 import type { ReactiveController } from "lit";
 import type { ScrollbarClone } from "../scrollbar-clone";
-import { getScrollbarInfo, type ScrollbarInfo, onNextRaf, round } from "../utils";
+import { getScrollbarInfo, type ScrollbarInfo, round } from "../utils";
 
 const SCROLL_EMIT_TIMEOUT = 50;
 
@@ -8,7 +8,8 @@ export class SyncScrollController implements ReactiveController {
     private host: ScrollbarClone;
     private scrollEmitter: HTMLElement | null = null;
     private scrollEmitterTimeout: ReturnType<typeof setTimeout> | null = null;
-    private cancelScrollRaf: (() => void) | null = null;
+    private initialRafId: number | null = null;
+    private aborted = false;
 
     constructor(host: ScrollbarClone) {
         this.host = host;
@@ -17,7 +18,13 @@ export class SyncScrollController implements ReactiveController {
 
     hostConnected(): void {
         this.cleanup();
-        this.cancelScrollRaf = onNextRaf(() => this.handleScroll());
+        this.aborted = false;
+        this.host.updateComplete.then(() => {
+            if (this.aborted) return;
+            this.initialRafId = requestAnimationFrame(() =>
+                this.handleScroll()
+            );
+        });
         this.addListeners();
     }
 
@@ -26,9 +33,11 @@ export class SyncScrollController implements ReactiveController {
     }
 
     private cleanup(): void {
+        this.aborted = true;
         this.removeListeners();
-        this.cancelScrollRaf?.();
-        this.cancelScrollRaf = null;
+        if (this.initialRafId !== null)
+            cancelAnimationFrame(this.initialRafId);
+        this.initialRafId = null;
         if (this.scrollEmitterTimeout)
             clearTimeout(this.scrollEmitterTimeout);
         this.scrollEmitterTimeout = null;

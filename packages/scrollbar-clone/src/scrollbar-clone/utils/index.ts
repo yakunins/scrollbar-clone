@@ -2,7 +2,5 @@ export * from "./get";
 export * from "./throttle";
 export * from "./round";
 export * from "./min-max";
-export * from "./get-style";
 export * from "./get-scrollbar-info";
-export * from "./on-next-raf";
 export * from "./get-user-agent";
