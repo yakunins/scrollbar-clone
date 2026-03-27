@@ -1,6 +1,6 @@
 {
     "name": "scrollbar-clone",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "scrollbar clone: lightweight web component that allows scrollbar to have custom margins, positioning, etc.",
     "main": "./dist/index.js",
     "module": "./dist/index.mjs",
@@ -29,6 +29,9 @@
         "clean": "rimraf .turbo && rimraf node_modules && rimraf dist && rimraf playwright-report",
         "test": "npx playwright test",
         "test-server": "node ./test-server/serve"
+    },
+    "dependencies": {
+        "lit": "^3.2.0"
     },
     "devDependencies": {
         "@playwright/test": "^1.52.0",

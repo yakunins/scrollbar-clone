@@ -4,8 +4,9 @@
 
 [![npm version](https://img.shields.io/npm/v/scrollbar-clone.svg)](https://www.npmjs.com/package/scrollbar-clone)
 
-Lightweight web component that allows scrollbar to have custom margins, positioning, etc.  
-It effectively transforms the scrollbar into a regular HTML element
+Lightweight web component that allows scrollbar to have custom margins, positioning, etc.
+It effectively transforms the scrollbar into a regular HTML element.
+Built with [Lit](https://lit.dev/) for reactive properties and composable controllers.
 
 ```html
 <scrollbar-clone
@@ -18,9 +19,10 @@ It effectively transforms the scrollbar into a regular HTML element
 
 Examples:
 
-- [Page scrollbar demo](https://yakunins.github.io/scrollbar-clone/demo1.html)
-- [Three-column layout demo](https://yakunins.github.io/scrollbar-clone/demo2.html)
-- @codesandbox.io: <a href="https://codesandbox.io/p/sandbox/m5mjh4">scrollbar position example</a>
+- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html) — replace the native page scrollbar
+- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html) — three independent scrollbar clones
+- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html) — custom position with CSS animation
+- [CodeSandbox](https://codesandbox.io/p/sandbox/m5mjh4) — interactive scrollbar position example
 
 ## Project structure
 
@@ -34,8 +36,10 @@ packages/
 
 apps/
 └── storybook/                # Storybook dev environment & demos
+
+docs/                         # GitHub Pages demos
 ```
 
-- **`packages/scrollbar-clone/`** — core vanilla web component, zero dependencies
-- **`packages/react-scrollbar-clone/`** — thin React wrapper that re-exports the web component as a React element
+- **`packages/scrollbar-clone/`** — core web component built with Lit, depends on `lit` and `ua-parser-js`
+- **`packages/react-scrollbar-clone/`** — React wrapper using [`@lit/react`](https://www.npmjs.com/package/@lit/react)
 - **`packages/config/`** — internal shared tooling configs (not published)

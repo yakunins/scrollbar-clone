@@ -1,7 +1,8 @@
 # Scrollbar Clone
 
-Lightweight web component that allows scrollbar to have custom margins, positioning, etc.  
-It effectively transforms the scrollbar into a regular HTML element
+Lightweight web component that allows scrollbar to have custom margins, positioning, etc.
+It effectively transforms the scrollbar into a regular HTML element.
+Built with [Lit](https://lit.dev/).
 
 ```html
 <scrollbar-clone
@@ -27,7 +28,29 @@ All attributes are optional. The simplest usage clones the page scrollbar:
 <scrollbar-clone></scrollbar-clone>
 ```
 
-Examples:
+## Architecture
 
--   [Page scrollbar demo](https://yakunins.github.io/scrollbar-clone/demo1.html)
--   [Three-column layout demo](https://yakunins.github.io/scrollbar-clone/demo2.html)
+The component extends `LitElement` and uses reactive controllers for each concern:
+
+| Controller | Responsibility |
+|---|---|
+| `OriginController` | Resolves the origin element from `origin-selector` |
+| `IdController` | Manages clone IDs and `data-scrollbar-clone` attributes |
+| `CloneController` | Creates the clone div, shadow DOM, and CSS |
+| `OriginResizeController` | Tracks origin size via `ResizeObserver` |
+| `CloneResizeController` | Tracks clone size via `ResizeObserver` |
+| `OriginScrollbarController` | Hides/shows the origin's native scrollbar |
+| `ScrollIndicatorController` | Sets `data-scrolling` attribute during scroll |
+| `SyncScrollController` | Synchronizes scroll position between origin and clone |
+| `DisableController` | Disables scroll on both origin and clone |
+
+## Dependencies
+
+- [`lit`](https://www.npmjs.com/package/lit) — reactive web component base
+- [`ua-parser-js`](https://www.npmjs.com/package/ua-parser-js) — browser/device detection for scrollbar width
+
+## Examples
+
+- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html)
+- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html)
+- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html)

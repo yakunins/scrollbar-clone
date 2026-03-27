@@ -1,5 +1,9 @@
 {
     "extends": "tsconfig/base.json",
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "useDefineForClassFields": false
+    },
     "include": ["src", "src/global.d.ts"],
     "exclude": ["dist", "build", "node_modules"]
 }

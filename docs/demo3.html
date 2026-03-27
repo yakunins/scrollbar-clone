@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Demo 3 — Scrollbar position | scrollbar-clone</title>
+        <link rel="stylesheet" href="style.css" />
+        <script
+            type="module"
+            src="https://unpkg.com/scrollbar-clone@0.0.5/dist/index.mjs"
+        ></script>
+        <style>
+            body.demo-3 {
+                --fill-color: navy;
+                --memphis: url("data:image/svg+xml,<svg width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='70' height='70' fill='transparent' patternTransform='scale(5) rotate(55)'><rect x='0' y='0' width='100%' height='100%' /><path d='M-4.8 4.44L4 16.59 16.14 7.8M32 30.54l-13.23 7.07 7.06 13.23M-9 38.04l-3.81 14.5 14.5 3.81M65.22 4.44L74 16.59 86.15 7.8M61 38.04l-3.81 14.5 14.5 3.81' stroke-linejoin='round' stroke-linecap='round' stroke-width='0.25' stroke='salmon' fill='none'/><path d='M59.71 62.88v3h3M4.84 25.54L2.87 27.8l2.26 1.97m7.65 16.4l-2.21-2.03-2.03 2.21m29.26 7.13l.56 2.95 2.95-.55' stroke-linejoin='round' stroke-linecap='round' stroke-width='0.35' stroke='rebeccapurple' fill='none'/><path d='M58.98 27.57l-2.35-10.74-10.75 2.36M31.98-4.87l2.74 10.65 10.65-2.73M31.98 65.13l2.74 10.66 10.65-2.74' stroke-linejoin='round' stroke-linecap='round' stroke-width='0.25' stroke='gold' fill='none'/><path d='M8.42 62.57l6.4 2.82 2.82-6.41m33.13-15.24l-4.86-5.03-5.03 4.86m-14-19.64l4.84-5.06-5.06-4.84' stroke-linejoin='round' stroke-linecap='round' stroke-width='0.25' stroke='%2300bdd6' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-470,-220)' fill='url(%23a)'/></svg>");
+
+                font-family: Consolas, mono;
+                letter-spacing: -0.025em;
+                line-height: 1.35;
+                background: var(--fill-color);
+            }
+
+            .pos-demo {
+                --w: clamp(25em, 50dvw, 35em);
+                --h: clamp(25em, 90dvh, 35em);
+                --x: calc((100dvw - var(--w)) / 2);
+                --y: calc((100dvh - var(--h)) / 2);
+            }
+
+            .pos-demo .bg {
+                background-color: var(--fill-color);
+                background-image: var(--memphis);
+                position: fixed;
+                width: 100dvw;
+                height: 100dvh;
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
+
+            .pos-demo .scroll-window {
+                --grad-size: 15dvh;
+                --g-y1: calc(var(--y) - var(--grad-size));
+                --g-y2: var(--y);
+                --g-y3: calc(100dvh - var(--y));
+                --g-y4: calc(var(--g-y3) + var(--grad-size));
+                --g-y5: calc(var(--g-y3) + var(--grad-size));
+                --g-x1: var(--x);
+                --g-x2: calc(100dvw - var(--x));
+
+                background-color: var(--fill-color);
+                background-image: var(--memphis);
+                position: fixed;
+                width: 100dvw;
+                height: 100dvh;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                box-sizing: border-box;
+
+                mask-image:
+                    linear-gradient(
+                        0deg,
+                        black 0%, black var(--g-y1),
+                        transparent var(--g-y2), transparent var(--g-y3),
+                        black var(--g-y4), black var(--g-y5)
+                    ),
+                    linear-gradient(
+                        90deg,
+                        black 0%, black var(--g-x1),
+                        transparent var(--g-x1), transparent var(--g-x2),
+                        black var(--g-x2)
+                    );
+            }
+
+            .pos-demo .article {
+                background: rgba(255, 255, 255, 0.8);
+                padding: 3em 2em;
+                margin: var(--y) var(--x);
+                z-index: 2;
+            }
+
+            .pos-demo .article b {
+                font-family: Calibri, Roboto, sans-serif;
+                letter-spacing: -0.15em;
+                font-weight: 400;
+                white-space: nowrap;
+            }
+
+            .pos-demo .article p {
+                margin-bottom: 1rem;
+                line-height: 1.5;
+            }
+
+            .pos-demo scrollbar-clone {
+                position: fixed;
+                height: var(--h);
+                top: var(--y);
+                right: calc(var(--x) + 0.02px);
+                z-index: 1;
+            }
+
+            .pos-demo a, .pos-demo u {
+                text-decoration-thickness: 0.075em !important;
+                text-underline-offset: 0.1em;
+                color: black;
+                text-decoration: underline;
+            }
+            .pos-demo a sup {
+                margin: 0 0.25em;
+                font-size: 80%;
+                font-weight: normal;
+            }
+            .pos-demo h1 a, .pos-demo b {
+                text-decoration: none;
+            }
+
+            .pos-demo .controls {
+                position: fixed;
+                top: 0.5rem;
+                left: 0.5rem;
+                z-index: 2;
+                color: white;
+                font-size: 0.85rem;
+            }
+            .pos-demo .controls label {
+                padding: 0.5rem;
+                display: block;
+                cursor: pointer;
+                user-select: none;
+            }
+            .pos-demo .controls input {
+                width: 1rem;
+                height: 1rem;
+                vertical-align: -0.1rem;
+                margin-right: 0.5rem;
+            }
+
+            /* header override for dark background */
+            body.demo-3 .header {
+                background: rgba(26, 26, 46, 0.85);
+            }
+
+            @property --deg {
+                syntax: "<angle>";
+                initial-value: 0deg;
+                inherits: false;
+            }
+
+            .pos-demo scrollbar-clone.animated {
+                --radius-x: 2em;
+                --radius-y: 2em;
+                --sy: sin(var(--deg));
+                --sx: cos(var(--deg));
+                --dy: calc(var(--radius-y) * var(--sy));
+                --dx: calc(var(--radius-x) * var(--sx));
+
+                animation: 5s pos-rotate infinite;
+                animation-timing-function: linear;
+                transform: translate(var(--dx), var(--dy));
+            }
+
+            @keyframes pos-rotate {
+                0%   { --deg: 0deg; }
+                50%  { --deg: 180deg; }
+                100% { --deg: 360deg; }
+            }
+
+            @media print {
+                .pos-demo scrollbar-clone,
+                .pos-demo .scroll-window,
+                .pos-demo .bg {
+                    display: none;
+                }
+                .pos-demo {
+                    --w: auto;
+                    --h: auto;
+                }
+            }
+        </style>
+    </head>
+    <body class="demo-3">
+        <header class="header">
+            <h1><a href="index.html">&lt;scrollbar-clone&gt;</a></h1>
+            <nav>
+                <a href="demo1.html">Page scrollbar</a>
+                <a href="demo2.html">Multi-panel</a>
+                <a href="demo3.html">Position</a>
+            </nav>
+            <span class="spacer"></span>
+            <a href="https://www.npmjs.com/package/scrollbar-clone">npm</a>
+            <a href="https://github.com/yakunins/scrollbar-clone">GitHub</a>
+        </header>
+
+        <div class="pos-demo">
+            <div class="bg"></div>
+            <scrollbar-clone
+                id="article"
+                show-origin-scrollbar="false"
+                class="animated"
+            ></scrollbar-clone>
+            <div class="article">
+                <h1>
+                    <a
+                        href="https://www.npmjs.com/package/scrollbar-clone"
+                        target="_blank"
+                    >
+                        <u>Scrollbar Clone</u>
+                        <sup>&#8599;</sup>
+                    </a>
+                </h1>
+                <p>Transforms scrollbar into a regular HTML element.</p>
+                <p style="color: red">
+                    Scrollbar of html element is here&nbsp;<b>&mdash;&rarr;</b>
+                    <br />
+                    <b>&larr;&mdash;</b>&nbsp;Scroll works even on these surroundings
+                </p>
+                <div id="lorem-content"></div>
+            </div>
+            <div class="scroll-window"></div>
+
+            <div class="controls">
+                <label>
+                    <input type="checkbox" id="toggle-disable" />
+                    disable-scroll
+                </label>
+                <label>
+                    <input type="checkbox" id="toggle-origin" />
+                    show-origin-scrollbar
+                </label>
+                <label>
+                    <input type="checkbox" id="toggle-animate" checked />
+                    animate-scrollbar
+                </label>
+            </div>
+        </div>
+
+        <script>
+            const lorem =
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
+            const short =
+                'Cras mattis consectetur purus sit amet fermentum. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec id elit non mi porta gravida at eget metus. Nullam quis risus eget urna mollis ornare vel eu leo.';
+
+            const el = document.getElementById('lorem-content');
+            const texts = [lorem, short];
+            for (let i = 0; i < 10; i++) {
+                const p = document.createElement('p');
+                p.textContent = texts[i % texts.length];
+                el.appendChild(p);
+            }
+
+            const clone = document.getElementById('article');
+
+            document
+                .getElementById('toggle-disable')
+                .addEventListener('change', (e) => {
+                    clone.setAttribute(
+                        'disable-scroll',
+                        e.target.checked ? 'true' : 'false',
+                    );
+                });
+
+            document
+                .getElementById('toggle-origin')
+                .addEventListener('change', (e) => {
+                    clone.setAttribute(
+                        'show-origin-scrollbar',
+                        e.target.checked ? 'true' : 'false',
+                    );
+                });
+
+            document
+                .getElementById('toggle-animate')
+                .addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        clone.classList.add('animated');
+                    } else {
+                        clone.classList.remove('animated');
+                    }
+                });
+        </script>
+    </body>
+</html>
