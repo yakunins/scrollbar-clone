@@ -1,29 +1,29 @@
-import React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
-import { LoremIpsum } from "./lorem-ipsum";
+import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
+import { LoremIpsum } from './lorem-ipsum';
 
-import "scrollbar-clone";
+import 'scrollbar-clone';
 
 interface StoryArgs {
-    "disable-scroll": boolean;
-    "show-origin-scrollbar": boolean;
-    "html-overflow-hidden": boolean;
-    "animate-scrollbar": boolean;
+    'disable-scroll': boolean;
+    'show-origin-scrollbar': boolean;
+    'html-overflow-hidden': boolean;
+    'animate-scrollbar': boolean;
 }
 
 const meta: Meta<StoryArgs> = {
-    title: "Web Component/scrollbar-clone",
+    title: 'Web Component/scrollbar-clone',
     argTypes: {
-        "disable-scroll": { control: "boolean" },
-        "show-origin-scrollbar": { control: "boolean" },
-        "html-overflow-hidden": { control: "boolean" },
-        "animate-scrollbar": { control: "boolean" },
+        'disable-scroll': { control: 'boolean' },
+        'show-origin-scrollbar': { control: 'boolean' },
+        'html-overflow-hidden': { control: 'boolean' },
+        'animate-scrollbar': { control: 'boolean' },
     },
     args: {
-        "disable-scroll": false,
-        "show-origin-scrollbar": false,
-        "html-overflow-hidden": false,
-        "animate-scrollbar": false,
+        'disable-scroll': false,
+        'show-origin-scrollbar': false,
+        'html-overflow-hidden': false,
+        'animate-scrollbar': false,
     },
 };
 
@@ -52,31 +52,31 @@ export const OneCol: Story = {
                     }
                 `}
                 </style>
-                {args["html-overflow-hidden"] ? (
+                {args['html-overflow-hidden'] ? (
                     <style>{overflowHiddenCSS}</style>
                 ) : null}
                 <scrollbar-clone
-                    disable-scroll={args["disable-scroll"] ? "true" : "false"}
+                    disable-scroll={args['disable-scroll'] ? 'true' : 'false'}
                     id="test"
                     show-origin-scrollbar={
-                        args["show-origin-scrollbar"] ? "true" : "false"
+                        args['show-origin-scrollbar'] ? 'true' : 'false'
                     }
                     style={{
-                        height: "100dvh",
-                        position: "fixed",
+                        height: '100dvh',
+                        position: 'fixed',
                         top: 0,
                         right: 0,
                     }}
                 />
                 {Array(20)
-                    .fill("")
+                    .fill('')
                     .map((_, idx) => (
                         <LoremIpsum key={idx} />
                     ))}
             </div>
         );
     },
-    name: "one column",
+    name: 'one column',
 };
 
 export const ThreeCol: Story = {
@@ -87,20 +87,20 @@ export const ThreeCol: Story = {
                 e.stopPropagation();
             };
             if (el) {
-                el.addEventListener("wheel", preventDefaultHandle);
-                el.addEventListener("touchmove", preventDefaultHandle);
+                el.addEventListener('wheel', preventDefaultHandle);
+                el.addEventListener('touchmove', preventDefaultHandle);
                 return () => {
-                    el.removeEventListener("wheel", preventDefaultHandle);
-                    el.removeEventListener("touchmove", preventDefaultHandle);
+                    el.removeEventListener('wheel', preventDefaultHandle);
+                    el.removeEventListener('touchmove', preventDefaultHandle);
                 };
             }
         };
 
         const overflowHiddenCSS = `html, body { overflow-y: hidden; }`;
-        const disableScroll = args["disable-scroll"] ? "true" : "false";
-        const showOriginScrollbar = args["show-origin-scrollbar"]
-            ? "true"
-            : "false";
+        const disableScroll = args['disable-scroll'] ? 'true' : 'false';
+        const showOriginScrollbar = args['show-origin-scrollbar']
+            ? 'true'
+            : 'false';
 
         return (
             <div className="page">
@@ -123,7 +123,7 @@ export const ThreeCol: Story = {
                         }
                     `}
                 </style>
-                {args["html-overflow-hidden"] ? (
+                {args['html-overflow-hidden'] ? (
                     <style>{overflowHiddenCSS}</style>
                 ) : null}
                 <header className="fixed-header">global navigation</header>
@@ -208,7 +208,7 @@ export const ThreeCol: Story = {
                         <div className="panel-left containing-block">
                             <div className="panel-left-scrollable">
                                 {Array(5)
-                                    .fill("")
+                                    .fill('')
                                     .map((_, idx) => (
                                         <LoremIpsum key={idx} />
                                     ))}
@@ -219,11 +219,11 @@ export const ThreeCol: Story = {
                                 disable-scroll={disableScroll}
                                 show-origin-scrollbar={showOriginScrollbar}
                                 style={{
-                                    position: "fixed",
-                                    top: "10%",
-                                    right: "0",
-                                    height: "80%",
-                                    outline: "1px solid red",
+                                    position: 'fixed',
+                                    top: '10%',
+                                    right: '0',
+                                    height: '80%',
+                                    outline: '1px solid red',
                                 }}
                             />
                         </div>
@@ -234,14 +234,14 @@ export const ThreeCol: Story = {
                             disable-scroll={disableScroll}
                             show-origin-scrollbar={showOriginScrollbar}
                             style={{
-                                height: "calc(100dvh - var(--header-height))",
-                                position: "fixed",
-                                top: "var(--header-height)",
-                                right: "var(--panel-left-width)",
+                                height: 'calc(100dvh - var(--header-height))',
+                                position: 'fixed',
+                                top: 'var(--header-height)',
+                                right: 'var(--panel-left-width)',
                             }}
                         />
                         {Array(20)
-                            .fill("")
+                            .fill('')
                             .map((_, idx) => (
                                 <LoremIpsum key={idx} />
                             ))}
@@ -250,7 +250,7 @@ export const ThreeCol: Story = {
                         <div className="panel-right containing-block">
                             <div className="panel-right-scrollable">
                                 {Array(5)
-                                    .fill("")
+                                    .fill('')
                                     .map((_, idx) => (
                                         <LoremIpsum key={idx} />
                                     ))}
@@ -261,10 +261,10 @@ export const ThreeCol: Story = {
                                 disable-scroll={disableScroll}
                                 show-origin-scrollbar={showOriginScrollbar}
                                 style={{
-                                    position: "fixed",
+                                    position: 'fixed',
                                     top: 0,
                                     right: 0,
-                                    height: "100%",
+                                    height: '100%',
                                 }}
                             />
                         </div>
@@ -288,14 +288,14 @@ export const ThreeCol: Story = {
                     <div className="portal" ref={preventScroll}>
                         <div>portal#1 with prevent-scroll</div>
                     </div>
-                    <div className="portal" style={{ top: "15vmax" }}>
+                    <div className="portal" style={{ top: '15vmax' }}>
                         <div>portal#2 content</div>
                     </div>
                 </div>
             </div>
         );
     },
-    name: "three column",
+    name: 'three column',
 };
 
 const positionDemoCSS = `
@@ -318,7 +318,7 @@ const positionDemoCSS = `
 
     .pos-demo {
         --w: clamp(25em, 50dvw, 35em);
-        --h: clamp(25em, 90dvh, 35em);
+        --h: clamp(25em, 50dvh, 35em);
         --x: calc((100dvw - var(--w)) / 2);
         --y: calc((100dvh - var(--h)) / 2);
     }
@@ -445,22 +445,22 @@ const positionDemoCSS = `
 export const Position: Story = {
     render: (args) => {
         const overflowHiddenCSS = `html, body { overflow-y: hidden; }`;
-        const disableScroll = args["disable-scroll"] ? "true" : "false";
-        const showOriginScrollbar = args["show-origin-scrollbar"]
-            ? "true"
-            : "false";
+        const disableScroll = args['disable-scroll'] ? 'true' : 'false';
+        const showOriginScrollbar = args['show-origin-scrollbar']
+            ? 'true'
+            : 'false';
 
         React.useEffect(() => {
-            document.body.classList.add("position-demo");
+            document.body.classList.add('position-demo');
             return () => {
-                document.body.classList.remove("position-demo");
+                document.body.classList.remove('position-demo');
             };
         }, []);
 
         return (
             <div className="pos-demo">
                 <style>{positionDemoCSS}</style>
-                {args["html-overflow-hidden"] ? (
+                {args['html-overflow-hidden'] ? (
                     <style>{overflowHiddenCSS}</style>
                 ) : null}
                 <div className="bg" />
@@ -469,8 +469,8 @@ export const Position: Story = {
                     disable-scroll={disableScroll}
                     show-origin-scrollbar={showOriginScrollbar}
                     {...{
-                        class: args["animate-scrollbar"]
-                            ? "animated"
+                        class: args['animate-scrollbar']
+                            ? 'animated'
                             : undefined,
                     }}
                 />
@@ -485,14 +485,15 @@ export const Position: Story = {
                         </a>
                     </h1>
                     <p>Transforms scrollbar into a regular HTML element.</p>
-                    <p style={{ color: "red" }}>
-                        Scrollbar of html element is here&nbsp;<b>&mdash;&rarr;</b>
+                    <p style={{ color: 'red' }}>
+                        Scrollbar of html element is here&nbsp;
+                        <b>&mdash;&rarr;</b>
                         <br />
                         <b>&larr;&mdash;</b>&nbsp;Scroll to work even on these
                         surroundings
                     </p>
                     {Array(5)
-                        .fill("")
+                        .fill('')
                         .map((_, idx) => (
                             <LoremIpsum key={idx} />
                         ))}
@@ -502,7 +503,7 @@ export const Position: Story = {
         );
     },
     args: {
-        "animate-scrollbar": true,
+        'animate-scrollbar': true,
     },
-    name: "scrollbar position",
+    name: 'scrollbar position',
 };
