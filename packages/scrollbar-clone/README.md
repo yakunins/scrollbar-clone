@@ -1,8 +1,15 @@
 # Scrollbar Clone
 
-Lightweight web component that allows scrollbar to have custom margins, positioning, etc.
-It effectively transforms the scrollbar into a regular HTML element.
+Turns a scrollbar into a normal HTML element.  
+Lightweight web component that allows scrollbar to have custom margins, positioning, etc.  
 Built with [Lit](https://lit.dev/).
+
+## Examples
+
+- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html)
+- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html)
+- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html)
+
 
 ```html
 <scrollbar-clone
@@ -48,9 +55,3 @@ The component extends `LitElement` and uses reactive controllers for each concer
 
 - [`lit`](https://www.npmjs.com/package/lit) — reactive web component base
 - [`ua-parser-js`](https://www.npmjs.com/package/ua-parser-js) — browser/device detection for scrollbar width
-
-## Examples
-
-- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html)
-- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html)
-- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html)

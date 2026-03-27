@@ -1,7 +1,15 @@
 # React Scrollbar Clone
 
+Turns a scrollbar into a normal HTML element.  
 React wrapper for [`scrollbar-clone`](https://www.npmjs.com/package/scrollbar-clone),
 generated with [`@lit/react`](https://www.npmjs.com/package/@lit/react).
+
+## Examples
+
+- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html)
+- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html)
+- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html)
+
 
 ```jsx
 import { ScrollbarClone } from "react-scrollbar-clone";
@@ -33,9 +41,3 @@ All props are optional. The simplest usage clones the page scrollbar:
 
 - `react` ^18.0.0 || ^19.0.0
 - `scrollbar-clone` >=0.0.4
-
-## Examples
-
-- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html)
-- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html)
-- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html)
