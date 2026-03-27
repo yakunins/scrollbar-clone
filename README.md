@@ -19,9 +19,9 @@ Built with [Lit](https://lit.dev/) for reactive properties and composable contro
 
 Examples:
 
-- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html) — replace the native page scrollbar
-- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html) — three independent scrollbar clones
-- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html) — custom position with CSS animation
+- [Page scrollbar](https://yakunins.github.io/scrollbar-clone/demo1.html) → replaced the native page scrollbar
+- [Multi-panel layout](https://yakunins.github.io/scrollbar-clone/demo2.html) → three independent scrollbar clones
+- [Scrollbar position](https://yakunins.github.io/scrollbar-clone/demo3.html) → custom position with CSS animation
 
 Try it in → [CodeSandbox, scrollbar position example](https://codesandbox.io/p/sandbox/m5mjh4)
 
